@@ -3,11 +3,9 @@ import CurrentWaypoint from './CurrentWaypoint';
 
 const GamePage = ({ navigation }) => {
   return (
-    <View>
-      <Text>GamePage</Text>
-      <Text>Map View</Text>
-      <CurrentWaypoint navigation={navigation} />
-    </View>
-  );
+		<View>
+			<CurrentWaypoint navigation={navigation} />
+		</View>
+	);
 };
 export default GamePage;
