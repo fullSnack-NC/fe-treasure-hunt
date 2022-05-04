@@ -1,10 +1,14 @@
-import { View, Text } from 'react-native';
+import { View, Text, Button } from "react-native";
 
-const GameLaunchHandover = () => {
-	return (
-		<View>
-			<Text>GameLaunchHandover</Text>
-		</View>
-	);
+const GameLaunchHandover = ({ navigation }) => {
+  return (
+    <View>
+      <Text>GameLaunchHandover</Text>
+      <Button
+        title="Start Gameplay"
+        onPress={() => navigation.push("GamePage")}
+      />
+    </View>
+  );
 };
 export default GameLaunchHandover;

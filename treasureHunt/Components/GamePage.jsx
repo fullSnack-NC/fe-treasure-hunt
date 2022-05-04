@@ -1,10 +1,13 @@
-import { View, Text } from 'react-native';
+import { View, Text } from "react-native";
+import CurrentWaypoint from "./CurrentWaypoint";
 
-const GamePage = () => {
-	return (
-		<View>
-			<Text>GamePage</Text>
-		</View>
-	);
+const GamePage = ({ navigation }) => {
+  return (
+    <View>
+      <Text>GamePage</Text>
+      <Text>Map View</Text>
+      <CurrentWaypoint navigation={navigation} />
+    </View>
+  );
 };
 export default GamePage;
