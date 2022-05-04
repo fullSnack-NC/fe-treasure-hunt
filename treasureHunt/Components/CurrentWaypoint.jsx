@@ -1,8 +1,9 @@
 import { View, Text, Button, StyleSheet } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { PROVIDER_GOOGLE, MapView } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { useState, useEffect } from 'react';
-import { REACT_APP_MAPS_API_KEY } from '.env';
+import React, { useState, useEffect } from 'react';
+import { REACT_APP_MAPS_API_KEY } from '@env';
 
 const CurrentWaypoint = ({ navigation }) => {
   const [location, setLocation] = useState(null);
@@ -30,18 +31,20 @@ const CurrentWaypoint = ({ navigation }) => {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
+      <Text style={styles.paragraph}>{text}</Text>
       <MapView
         style={{ height: '70%', width: '90%' }}
         provider={PROVIDER_GOOGLE}
         apiKey={apiKey}
         showsUserLocation={true}
       />
-      <Button title='Found' onPress={() => navigation.push('Certificate')} />
+      {/* <Button title='Found' onPress={() => navigation.push('Certificate')} />
       <Button
         title="Can't find (skip)"
         onPress={() => navigation.push('Certificate')}
-      />
+      /> */}
+      <StatusBar style='auto' />
     </View>
   );
 };
