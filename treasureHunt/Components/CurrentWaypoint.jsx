@@ -58,6 +58,7 @@ const CurrentWaypoint = ({ navigation }) => {
 				/>
 			</View>
 			<View
+				// pointerEvents='none'
 				style={{
 					flex: 1,
 					height: screenHeight,
@@ -67,7 +68,20 @@ const CurrentWaypoint = ({ navigation }) => {
 					backgroundColor: 'blue',
 				}}
 			>
-				<MapView style={{ height: screenHeight - 40, width: screenWidth - 40 }} provider={PROVIDER_GOOGLE} apiKey={apiKey} showsUserLocation={true} />
+				<MapView
+					style={{
+						height: screenHeight - 40,
+						width: screenWidth - 40,
+					}}
+					provider={PROVIDER_GOOGLE}
+					apiKey={apiKey}
+					showsUserLocation={true}
+					scrollEnabled={false}
+					minZoomLevel={15} // default => 0
+					maxZoomLevel={16} // default => 20
+					rotateEnabled={true}
+					mapType='satellite'
+				/>
 			</View>
 		</ScrollView>
 	);
