@@ -2,7 +2,7 @@ import { View, Text, Button, Image, StyleSheet, ScrollView, AppRegistry, Dimensi
 import { PROVIDER_GOOGLE } from 'react-native-maps';
 import MapView from 'react-native-maps';
 import * as Location from 'expo-location';
-import { useState, useEffect, Component } from 'react';
+import { useState, useEffect } from 'react';
 import { REACT_APP_MAPS_API_KEY } from '@env';
 
 const styles = StyleSheet.create({
