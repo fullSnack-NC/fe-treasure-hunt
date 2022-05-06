@@ -36,6 +36,11 @@ const Welcome = ({ navigation }) => {
         title='Locations'
         onPress={() => navigation.navigate('Locations')}
       />
+      <Button
+        style={styles.button}
+        title='Go to game page'
+        onPress={() => navigation.navigate('GamePage')}
+      />
     </View>
   );
 };

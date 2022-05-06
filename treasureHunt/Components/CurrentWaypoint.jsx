@@ -13,6 +13,7 @@ import { REACT_APP_MAPS_API_KEY } from '@env';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import globalStyles from '../css/style';
 import { StyleSheet } from 'react-native';
+// import Geolocation from 'react-native-geolocation-service';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,6 +26,8 @@ const styles = StyleSheet.create({
 
 const CurrentWaypoint = ({ navigation }) => {
   const [location, setLocation] = useState(null);
+  console.log(location);
+  const [region, setRegion] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const apiKey = REACT_APP_MAPS_API_KEY;
   const screenWidth = Dimensions.get('window').width;
@@ -40,7 +43,7 @@ const CurrentWaypoint = ({ navigation }) => {
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
     })();
-  }, []);
+  }, [location]);
 
   let text = 'Waiting..';
 
@@ -49,6 +52,21 @@ const CurrentWaypoint = ({ navigation }) => {
   } else if (location) {
     text = JSON.stringify(location);
   }
+
+  const initialRegion = () => {
+    return {
+      region: {
+        latitude: 53.83767, // location.coords.latitude,
+        longitude: -1.495378, //location.coords.longitude,
+        latitudeDelta: 0.003922,
+        longitudeDelta: 0.003421,
+      },
+    };
+  };
+
+  const onRegionChange = (region) => {
+    setRegion({ region });
+  };
 
   return (
     <ScrollView horizontal={true} pagingEnabled={true}>
@@ -73,7 +91,7 @@ const CurrentWaypoint = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <View
-        // pointerEvents='none'
+        pointerEvents='none'
         style={{
           flex: 1,
           height: screenHeight,
@@ -91,30 +109,22 @@ const CurrentWaypoint = ({ navigation }) => {
             }}
             provider={PROVIDER_GOOGLE}
             apiKey={apiKey}
-            initialRegion={{
-              latitude: 53.83767, // Needs setting to dynamic value. If set to dynamic value, first time app launched it fails.
-              longitude: -1.495378, // Needs setting to dynamic value. If set to dynamic value, first time app launched it fails.
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
+            region={region}
+            onRegionChange={onRegionChange}
+            // initialRegion={{
+            //   latitude: location.coords.latitude,
+            //   longitude: location.coords.longitude,
+            //   latitudeDelta: 0.003922,
+            //   longitudeDelta: 0.003421,
+            // }}
             // onRegionChange, onRegionChangeComplete: Not working: should listen for GPX location change (https://dev.to/cecheverri4/google-maps-geolocation-and-unit-test-on-react-native-4eim)
 
-            // onRegionChange={() => {
-            //   setLocation({
-            //     latitude: location.coords.latitude,
-            //     longitude: location.coords.longitude,
-            //   });
-            // }}
-            // onRegionChangeComplete={() => {
-            //   setLocation({
-            //     latitude: location.coords.latitude,
-            //     longitude: location.coords.longitude,
-            //   });
-            // }}
+            // onRegionChange={(location) => setLocation(location)}
+            // onRegionChangeComplete={(location) => setLocation(location)}
             showsUserLocation={true}
             scrollEnabled={false}
-            minZoomLevel={17} // default => 0
-            maxZoomLevel={17} // default => 20
+            // minZoomLevel={17} // default => 0
+            // maxZoomLevel={17} // default => 20
             rotateEnabled={true}
             mapType='satellite'
           />
