@@ -11,7 +11,8 @@ import * as Location from 'expo-location';
 import { useState, useEffect } from 'react';
 import { REACT_APP_MAPS_API_KEY } from '@env';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import styles from '../css/style';
+import globalStyles from '../css/style';
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -64,11 +65,11 @@ const CurrentWaypoint = ({ navigation }) => {
             // backgroundColor: 'tomato',
           }}
         />
-        <TouchableOpacity style={styles.baseBtn}>
-          <Text style={styles.btnText}>Found </Text>
+        <TouchableOpacity style={globalStyles.baseBtn}>
+          <Text style={globalStyles.btnText}>Found </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.baseBtn}>
-          <Text style={styles.btnText}>Find the next treasure</Text>
+        <TouchableOpacity style={globalStyles.baseBtn}>
+          <Text style={globalStyles.btnText}>Find the next treasure</Text>
         </TouchableOpacity>
       </View>
       <View
