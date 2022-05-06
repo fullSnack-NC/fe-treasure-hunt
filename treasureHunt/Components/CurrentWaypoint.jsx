@@ -1,9 +1,7 @@
 import {
   View,
   Text,
-  Button,
   Image,
-  StyleSheet,
   ScrollView,
   AppRegistry,
   Dimensions,
@@ -12,6 +10,8 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useState, useEffect } from 'react';
 import { REACT_APP_MAPS_API_KEY } from '@env';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import styles from '../css/style';
 
 const styles = StyleSheet.create({
   container: {
@@ -64,6 +64,12 @@ const CurrentWaypoint = ({ navigation }) => {
             // backgroundColor: 'tomato',
           }}
         />
+        <TouchableOpacity style={styles.baseBtn}>
+          <Text style={styles.btnText}>Found </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.baseBtn}>
+          <Text style={styles.btnText}>Find the next treasure</Text>
+        </TouchableOpacity>
       </View>
       <View
         // pointerEvents='none'
