@@ -1,9 +1,6 @@
 import { View, Text, Button, Image, StyleSheet, Vibration } from "react-native";
-
-const VibrationPattern = () => {
-  const duration = 5000;
-  const pattern = [1000, 2000, 1000, 2000];
-};
+import { Audio } from "expo-av";
+import React, { useState } from "react";
 
 const styles = StyleSheet.create({
   container: {
@@ -24,12 +21,31 @@ const styles = StyleSheet.create({
 });
 
 const Welcome = ({ navigation }) => {
+  const [sound, setSound] = React.useState();
+
+  async function playSound() {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../assets/sounds/power-up.wav")
+    );
+    setSound(sound);
+    await sound.playAsync();
+  }
+
+  React.useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
   const duration = 1000;
   navigateGo = () => navigation.navigate("GamePage");
   vibeGo = () => Vibration.vibrate(duration);
   navigateBundle = () => {
     this.navigateGo();
     this.vibeGo();
+    playSound();
   };
 
   locationGo = () => navigation.navigate("Locations");
@@ -37,6 +53,7 @@ const Welcome = ({ navigation }) => {
   locationBundle = () => {
     this.locationGo();
     this.vibeGo();
+    playSound();
   };
 
   return (
