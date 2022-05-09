@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { View, Text, Button } from "react-native";
-import HuntCard from "./HuntCard";
 import { getMapsByParkID } from "../utils/api";
 
 const HuntList = ({ route, navigation }) => {
