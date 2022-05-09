@@ -20,7 +20,7 @@ const Locations = ({ navigation }) => {
 				setError({ err });
 				setIsLoading(false);
 			});
-	});
+	}, []);
 
 	if (isLoading) {
 		return <Text>Parks Loading...</Text>;

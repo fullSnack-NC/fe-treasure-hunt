@@ -21,7 +21,7 @@ const HuntList = ({ route, navigation }) => {
 				setError({ err });
 				setIsLoading(false);
 			});
-	});
+	}, []);
 
 	if (isLoading) {
 		return <Text>Maps Loading...</Text>;
