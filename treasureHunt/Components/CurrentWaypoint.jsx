@@ -63,10 +63,10 @@ const CurrentWaypoint = () => {
 		},
 	];
 
-	const [currentWaypointPosition, setCurrentWaypointPosition] = useState(
+	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(
 		waypointPositions[0]
 	);
-	// console.log(currentWaypointPosition, '<<<CURRENT POSITION');
+	console.log(currentWaypointMarker, '<<<CURRENT POSITION');
 	const [location, setLocation] = useState({
 		latitude: 0,
 		longitude: 0,
@@ -121,8 +121,12 @@ const CurrentWaypoint = () => {
 		let newID = CurrentWaypoint_id + 1;
 		setCurrentWaypoint_id(newID);
 
-		setCurrentWaypointPosition(waypointPositions[CurrentWaypoint_id]);
-		console.log(currentWaypointPosition);
+		// if (newID > waypointPositions.length) {
+		// 	return (<Button title="HuntList" onPress={() => navigation.push("HuntList")})
+		// }
+
+		setcurrentWaypointMarker(waypointPositions[newID]);
+		// console.log(currentWaypointPosition);
 	};
 
 	let text = 'Waiting..';
@@ -182,7 +186,7 @@ const CurrentWaypoint = () => {
 						rotateEnabled={true}
 						mapType='satellite'
 					>
-						<Marker coordinate={currentWaypointPosition} />
+						<Marker coordinate={currentWaypointMarker} />
 					</MapView>
 				)}
 			</View>
