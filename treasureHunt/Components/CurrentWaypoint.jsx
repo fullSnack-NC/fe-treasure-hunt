@@ -57,7 +57,9 @@ const CurrentWaypoint = ({ navigation }) => {
 		},
 	];
 
-	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(waypointPositions[0]);
+	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(
+		waypointPositions[0]
+	);
 	const [location, setLocation] = useState({
 		latitude: 0,
 		longitude: 0,
@@ -111,17 +113,25 @@ const CurrentWaypoint = ({ navigation }) => {
 
 		if (300 < distance && distance <= 500) {
 			setBackgroundColor('#2B4279');
-			// setDistanceMsg('');
+			setDistanceMsg('You’re freezing cold…brrrrrr');
 		} else if (200 < distance && distance <= 300) {
 			setBackgroundColor('#65428C');
+			setDistanceMsg('You’re cold');
 		} else if (150 < distance && distance <= 200) {
 			setBackgroundColor('#A1378B');
+			setDistanceMsg("You're warm");
 		} else if (80 < distance && distance <= 150) {
 			setBackgroundColor('#D42374');
+			setDistanceMsg('It’s toasty warm');
 		} else if (40 < distance && distance <= 80) {
 			setBackgroundColor('#F62B4C');
-		} else if (0 < distance && distance < 40) {
+			setDistanceMsg('You’re quite hot… be careful you don’t burn');
+		} else if (0 <= distance && distance < 40) {
 			setBackgroundColor('#FF5800');
+			setDistanceMsg('You’re red hot!');
+		} else if (0 === distance) {
+			setBackgroundColor('#FF5800');
+			setDistanceMsg('Scorching! You have arrived!');
 		}
 
 		const timer = setTimeout(() => {
@@ -164,7 +174,10 @@ const CurrentWaypoint = ({ navigation }) => {
 						alignItems: 'center',
 					}}
 				/>
-				<TouchableOpacity style={globalStyles.baseBtn} onPress={() => handlePress()}>
+				<TouchableOpacity
+					style={globalStyles.baseBtn}
+					onPress={() => handlePress()}
+				>
 					<Text style={globalStyles.btnText}>Found</Text>
 				</TouchableOpacity>
 				<TouchableOpacity style={globalStyles.baseBtn}>
