@@ -17,6 +17,9 @@ import {
 import globalStyles from '../css/style';
 import { StyleSheet } from 'react-native';
 
+const geolib = require('geolib');
+import { getDistance } from 'geolib';
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -69,7 +72,6 @@ const CurrentWaypoint = ({ navigation }) => {
 	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(
 		waypointPositions[0]
 	);
-	console.log(currentWaypointMarker, '<<<CURRENT POSITION');
 	const [location, setLocation] = useState({
 		latitude: 0,
 		longitude: 0,
@@ -86,10 +88,6 @@ const CurrentWaypoint = ({ navigation }) => {
 	const apiKey = REACT_APP_MAPS_API_KEY;
 	const screenWidth = Dimensions.get('window').width;
 	const screenHeight = Dimensions.get('window').height;
-
-	useEffect(() => {
-		async () => {};
-	}, []);
 
 	useEffect(() => {
 		async () => {
@@ -112,6 +110,19 @@ const CurrentWaypoint = ({ navigation }) => {
 				longitudeDelta: 0.003421,
 			});
 		};
+
+		const distance = geolib.getDistance(
+			{
+				latitude: location.latitude,
+				longitude: location.longitude,
+			},
+			{
+				latitude: currentWaypointMarker.latitude,
+				longitude: currentWaypointMarker.longitude,
+			}
+		);
+
+		console.log(distance, 'DISTANCE');
 
 		const timer = setTimeout(() => {
 			getLocation();
