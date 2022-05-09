@@ -1,10 +1,10 @@
 import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  AppRegistry,
-  Dimensions,
+	View,
+	Text,
+	Image,
+	ScrollView,
+	AppRegistry,
+	Dimensions,
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -15,33 +15,66 @@ import globalStyles from '../css/style';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+	container: {
+		flex: 1,
+		backgroundColor: '#fff',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 });
 
 const CurrentWaypoint = () => {
-  const waypointPositions = [
-		{ wayPoint_id: 1, latitude: 53.839277, longitude: -1.496882, latitudeDelta: 0.01, longitudeDelta: 0.01 },
-		{ wayPoint_id: 2, latitude: 53.837302, longitude: -1.498502, latitudeDelta: 0.01, longitudeDelta: 0.01 },
-		{ wayPoint_id: 3, latitude: 53.83808, longitude: -1.502912, latitudeDelta: 0.01, longitudeDelta: 0.01 },
-		{ wayPoint_id: 4, latitude: 53.838978, longitude: -1.499773, latitudeDelta: 0.01, longitudeDelta: 0.01 },
-		{ wayPoint_id: 5, latitude: 53.839108, longitude: -1.49662, latitudeDelta: 0.01, longitudeDelta: 0.01 },
+	const [CurrentWaypoint_id, setCurrentWaypoint_id] = useState(0);
+	const waypointPositions = [
+		{
+			wayPoint_id: 1,
+			latitude: 53.839277,
+			longitude: -1.496882,
+			latitudeDelta: 0.01,
+			longitudeDelta: 0.01,
+		},
+		{
+			wayPoint_id: 2,
+			latitude: 53.837302,
+			longitude: -1.498502,
+			latitudeDelta: 0.01,
+			longitudeDelta: 0.01,
+		},
+		{
+			wayPoint_id: 3,
+			latitude: 53.83808,
+			longitude: -1.502912,
+			latitudeDelta: 0.01,
+			longitudeDelta: 0.01,
+		},
+		{
+			wayPoint_id: 4,
+			latitude: 53.838978,
+			longitude: -1.499773,
+			latitudeDelta: 0.01,
+			longitudeDelta: 0.01,
+		},
+		{
+			wayPoint_id: 5,
+			latitude: 53.839108,
+			longitude: -1.49662,
+			latitudeDelta: 0.01,
+			longitudeDelta: 0.01,
+		},
 	];
 
-	const [currentWaypointPosition, setCurrentWaypointPosition] = useState(waypointPositions[0]);
-	console.log(currentWaypointPosition);
+	const [currentWaypointPosition, setCurrentWaypointPosition] = useState(
+		waypointPositions[0]
+	);
+	// console.log(currentWaypointPosition, '<<<CURRENT POSITION');
 	const [location, setLocation] = useState({
 		latitude: 0,
 		longitude: 0,
 	});
 
 	const [region, setRegion] = useState({
-		latitude: 0,
-		longitude: 0,
+		latitude: 53.839277,
+		longitude: -1.496882,
 		latitudeDelta: 0.003922,
 		longitudeDelta: 0.003421,
 	});
@@ -84,8 +117,12 @@ const CurrentWaypoint = () => {
 		return () => clearTimeout(timer);
 	}, [location, region]);
 
-	const handlePress = (wayPoint_id) => {
-		setCurrentWaypointPosition(wayPoint_id + 1);
+	const handlePress = () => {
+		let newID = CurrentWaypoint_id + 1;
+		setCurrentWaypoint_id(newID);
+
+		setCurrentWaypointPosition(waypointPositions[CurrentWaypoint_id]);
+		console.log(currentWaypointPosition);
 	};
 
 	let text = 'Waiting..';
@@ -110,7 +147,10 @@ const CurrentWaypoint = () => {
 						alignItems: 'center',
 					}}
 				/>
-				<TouchableOpacity style={globalStyles.baseBtn} onPress={() => handlePress(wayPoint_id)}>
+				<TouchableOpacity
+					style={globalStyles.baseBtn}
+					onPress={() => handlePress()}
+				>
 					<Text style={globalStyles.btnText}>Found</Text>
 				</TouchableOpacity>
 				<TouchableOpacity style={globalStyles.baseBtn}>
@@ -118,7 +158,7 @@ const CurrentWaypoint = () => {
 				</TouchableOpacity>
 			</View>
 			<View
-				pointerEvents='none'
+				// pointerEvents='none'
 				style={{
 					flex: 1,
 					height: screenHeight,
@@ -136,9 +176,9 @@ const CurrentWaypoint = () => {
 						}}
 						provider={PROVIDER_GOOGLE}
 						apiKey={apiKey}
-						region={region}
+						initialRegion={region}
 						showsUserLocation={true}
-						scrollEnabled={false}
+						scrollEnabled={true}
 						rotateEnabled={true}
 						mapType='satellite'
 					>
