@@ -10,7 +10,10 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useState, useEffect } from 'react';
 import { REACT_APP_MAPS_API_KEY } from '@env';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {
+	TouchableOpacity,
+	TouchableWithoutFeedback,
+} from 'react-native-gesture-handler';
 import globalStyles from '../css/style';
 import { StyleSheet } from 'react-native';
 
@@ -23,7 +26,7 @@ const styles = StyleSheet.create({
 	},
 });
 
-const CurrentWaypoint = () => {
+const CurrentWaypoint = ({ navigation }) => {
 	const [CurrentWaypoint_id, setCurrentWaypoint_id] = useState(0);
 	const waypointPositions = [
 		{
@@ -121,12 +124,11 @@ const CurrentWaypoint = () => {
 		let newID = CurrentWaypoint_id + 1;
 		setCurrentWaypoint_id(newID);
 
-		// if (newID > waypointPositions.length) {
-		// 	return (<Button title="HuntList" onPress={() => navigation.push("HuntList")})
-		// }
+		if (newID === waypointPositions.length) {
+			return navigation.push('Certificate');
+		}
 
 		setcurrentWaypointMarker(waypointPositions[newID]);
-		// console.log(currentWaypointPosition);
 	};
 
 	let text = 'Waiting..';
@@ -187,6 +189,16 @@ const CurrentWaypoint = () => {
 						mapType='satellite'
 					>
 						<Marker coordinate={currentWaypointMarker} />
+						<MapView.Circle
+							center={{
+								latitude: currentWaypointMarker.latitude,
+								longitude: currentWaypointMarker.longitude,
+							}}
+							radius={30}
+							strokeWidth={2}
+							strokeColor='#3399ff'
+							fillColor='#80bfff'
+						/>
 					</MapView>
 				)}
 			</View>
