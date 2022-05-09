@@ -1,25 +1,13 @@
-import {
-	View,
-	Text,
-	Image,
-	ScrollView,
-	AppRegistry,
-	Dimensions,
-} from 'react-native';
+import { View, Text, Image, ScrollView, Dimensions } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useState, useEffect } from 'react';
 import { REACT_APP_MAPS_API_KEY } from '@env';
-import {
-	TouchableOpacity,
-	TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import globalStyles from '../css/style';
 import { StyleSheet } from 'react-native';
 
 const geolib = require('geolib');
-import { getDistance } from 'geolib';
-
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -69,9 +57,7 @@ const CurrentWaypoint = ({ navigation }) => {
 		},
 	];
 
-	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(
-		waypointPositions[0]
-	);
+	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(waypointPositions[0]);
 	const [location, setLocation] = useState({
 		latitude: 0,
 		longitude: 0,
@@ -88,6 +74,18 @@ const CurrentWaypoint = ({ navigation }) => {
 	const apiKey = REACT_APP_MAPS_API_KEY;
 	const screenWidth = Dimensions.get('window').width;
 	const screenHeight = Dimensions.get('window').height;
+	const distance = geolib.getDistance(
+		{
+			latitude: location.latitude,
+			longitude: location.longitude,
+		},
+		{
+			latitude: currentWaypointMarker.latitude,
+			longitude: currentWaypointMarker.longitude,
+		}
+	);
+	const [backgroundColor, setBackgroundColor] = useState('#2B4279');
+	const [distanceMsg, setDistanceMsg] = useState('');
 
 	useEffect(() => {
 		async () => {
@@ -111,25 +109,27 @@ const CurrentWaypoint = ({ navigation }) => {
 			});
 		};
 
-		const distance = geolib.getDistance(
-			{
-				latitude: location.latitude,
-				longitude: location.longitude,
-			},
-			{
-				latitude: currentWaypointMarker.latitude,
-				longitude: currentWaypointMarker.longitude,
-			}
-		);
-
-		console.log(distance, 'DISTANCE');
+		if (300 < distance && distance <= 500) {
+			setBackgroundColor('#2B4279');
+			// setDistanceMsg('');
+		} else if (200 < distance && distance <= 300) {
+			setBackgroundColor('#65428C');
+		} else if (150 < distance && distance <= 200) {
+			setBackgroundColor('#A1378B');
+		} else if (80 < distance && distance <= 150) {
+			setBackgroundColor('#D42374');
+		} else if (40 < distance && distance <= 80) {
+			setBackgroundColor('#F62B4C');
+		} else if (0 < distance && distance < 40) {
+			setBackgroundColor('#FF5800');
+		}
 
 		const timer = setTimeout(() => {
 			getLocation();
 		}, 2000);
 
 		return () => clearTimeout(timer);
-	}, [location, region]);
+	}, [location, region, distance]);
 
 	const handlePress = () => {
 		let newID = CurrentWaypoint_id + 1;
@@ -164,10 +164,7 @@ const CurrentWaypoint = ({ navigation }) => {
 						alignItems: 'center',
 					}}
 				/>
-				<TouchableOpacity
-					style={globalStyles.baseBtn}
-					onPress={() => handlePress()}
-				>
+				<TouchableOpacity style={globalStyles.baseBtn} onPress={() => handlePress()}>
 					<Text style={globalStyles.btnText}>Found</Text>
 				</TouchableOpacity>
 				<TouchableOpacity style={globalStyles.baseBtn}>
@@ -182,14 +179,14 @@ const CurrentWaypoint = ({ navigation }) => {
 					width: screenWidth,
 					justifyContent: 'center',
 					alignItems: 'center',
-					backgroundColor: 'blue',
+					backgroundColor: backgroundColor,
 				}}
 			>
 				{location && (
 					<MapView
 						style={{
-							height: screenHeight - 40,
-							width: screenWidth - 40,
+							height: screenHeight - 50,
+							width: screenWidth - 50,
 						}}
 						provider={PROVIDER_GOOGLE}
 						apiKey={apiKey}
@@ -200,16 +197,9 @@ const CurrentWaypoint = ({ navigation }) => {
 						mapType='satellite'
 					>
 						<Marker coordinate={currentWaypointMarker} />
-						<MapView.Circle
-							center={{
-								latitude: currentWaypointMarker.latitude,
-								longitude: currentWaypointMarker.longitude,
-							}}
-							radius={30}
-							strokeWidth={2}
-							strokeColor='#3399ff'
-							fillColor='#80bfff'
-						/>
+						<Text style={{ color: 'white', fontSize: 40 }}>
+							{distanceMsg} {distance}m away!
+						</Text>
 					</MapView>
 				)}
 			</View>
