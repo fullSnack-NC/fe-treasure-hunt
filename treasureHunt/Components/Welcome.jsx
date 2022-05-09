@@ -40,6 +40,7 @@ const Welcome = ({ navigation }) => {
   }, [sound]);
 
   const duration = 1000;
+  
   navigateGo = () => navigation.navigate("GamePage");
   vibeGo = () => Vibration.vibrate(duration);
   navigateBundle = () => {
