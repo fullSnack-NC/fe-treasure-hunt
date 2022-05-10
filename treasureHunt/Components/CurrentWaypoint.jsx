@@ -169,12 +169,6 @@ const CurrentWaypoint = ({ navigation }) => {
 						alignItems: 'center',
 					}}
 				/>
-				<TouchableOpacity
-					style={globalStyles.baseBtn}
-					onPress={() => handlePress()}
-				>
-					<Text style={globalStyles.btnText}>Found</Text>
-				</TouchableOpacity>
 				<TouchableOpacity style={globalStyles.baseBtn}>
 					<Text style={globalStyles.btnText}>Find the next treasure</Text>
 				</TouchableOpacity>
@@ -199,26 +193,24 @@ const CurrentWaypoint = ({ navigation }) => {
 						}}
 						provider={PROVIDER_GOOGLE}
 						apiKey={apiKey}
-						initialRegion={region}
+						// initialRegion={region}
+						region={region}
 						showsUserLocation={true}
 						scrollEnabled={true}
 						rotateEnabled={true}
 						mapType='satellite'
 					>
 						<Marker coordinate={currentWaypointMarker} />
-						<Text style={{ color: 'white', fontSize: 40 }}>
-							{distance}m away!
-						</Text>
+						<Text style={{ color: 'white', fontSize: 40 }}>{distance}m away!</Text>
 						<Text>{distanceMsg}</Text>
 					</MapView>
 				)}
-				<Text> Swipe for Clue!</Text>
-				<TouchableOpacity
-					style={globalStyles.baseBtn}
-					onPress={() => handlePress()}
-				>
-					<Text style={globalStyles.btnText}>Found</Text>
-				</TouchableOpacity>
+				<Text> Swipe for Clue!⬅️ &lt;&lt;</Text>
+				{distance < 40 && (
+					<TouchableOpacity style={globalStyles.baseBtn} onPress={() => handlePress()}>
+						<Text style={globalStyles.btnText}>Found</Text>
+					</TouchableOpacity>
+				)}
 			</View>
 		</ScrollView>
 	);
