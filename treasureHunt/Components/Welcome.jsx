@@ -57,28 +57,17 @@ const Welcome = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text>Welcome to Treasure Hunt</Text>
-      <Image
-        style={styles.welcomeImage}
-        source={require("../assets/welcome.png")}
-        resizeMode="contain"
-      />
-      <Text>
-        This is a game for young families to help children understand the world
-        around them using maps
-      </Text>
-      <Button
-        style={styles.button}
-        title="Locations"
-        onPress={() => this.locationBundle()}
-      />
-      <Button
+		<View style={styles.container}>
+			<Text>Welcome to Treasure Hunt</Text>
+			<Image style={styles.welcomeImage} source={require('../assets/welcome.png')} resizeMode='contain' />
+			<Text>This is a game for young families to help children understand the world around them using maps</Text>
+			<Button style={styles.button} title='Locations' onPress={() => this.locationBundle()} />
+			{/* <Button
         style={styles.button}
         title="Go to game page"
         onPress={() => this.navigateBundle()}
-      />
-    </View>
-  );
+      /> */}
+		</View>
+	);
 };
 export default Welcome;
