@@ -20,40 +20,51 @@ const CurrentWaypoint = ({ navigation }) => {
 	const waypointPositions = [
 		{
 			wayPoint_id: 1,
-			latitude: 53.839277,
-			longitude: -1.496882,
+			latitude: 53.839142,
+			longitude: -1.499168,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
 		},
 		{
 			wayPoint_id: 2,
-			latitude: 53.837302,
-			longitude: -1.498502,
+			latitude: 53.838172,
+			longitude: -1.503277,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
 		},
 		{
 			wayPoint_id: 3,
-			latitude: 53.83808,
-			longitude: -1.502912,
+			latitude: 53.837907,
+			longitude: -1.499438,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
 		},
 		{
 			wayPoint_id: 4,
-			latitude: 53.838978,
-			longitude: -1.499773,
+			latitude: 53.83561,
+			longitude: -1.497038,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
 		},
 		{
 			wayPoint_id: 5,
-			latitude: 53.839108,
-			longitude: -1.49662,
+			latitude: 53.837088,
+			longitude: -1.495215,
+			latitudeDelta: 0.01,
+			longitudeDelta: 0.01,
+		},
+		{
+			wayPoint_id: 6,
+			latitude: 53.839485,
+			longitude: -1.497238,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
 		},
 	];
+
+	console.log(waypointPositions[0]);
+  const [isLoading, setIsLoading] = useState(true);
+  
 	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(waypointPositions[0]);
 	const [location, setLocation] = useState({
 		latitude: 0,
@@ -135,6 +146,21 @@ const CurrentWaypoint = ({ navigation }) => {
 		return () => clearTimeout(timer);
 	}, [location, region, distance]);
 
+
+	// useEffect(() => {
+	// 	getWaypointByMapID(map_id)
+	// 		.then((data) => {
+	// 			setWaypoints(data);
+	// 			setIsLoading(false);
+	// 			setErrorMsg(null);
+	// 		})
+	// 		.catch((err) => {
+	// 			console.log(err.response.data);
+	// 			setErrorMsg({ err });
+	// 			setIsLoading(false);
+	// 		});
+	// }, []);
+
 	const handlePress = () => {
 		let newID = CurrentWaypoint_id + 1;
 		setCurrentWaypoint_id(newID);
@@ -157,8 +183,8 @@ const CurrentWaypoint = ({ navigation }) => {
 	return (
 		<ScrollView horizontal={true} pagingEnabled={true}>
 			<View>
-				{/* <Image
-					source={require('../assets/waypoint-images/Waypoint_1_Roundhay_Park.png')}
+				<Image
+					source={require(`../assets/waypoint-images/${map_id}_${CurrentWaypoint_id}.png`)}
 					resizeMode='contain'
 					style={{
 						flex: 1,
@@ -167,7 +193,7 @@ const CurrentWaypoint = ({ navigation }) => {
 						justifyContent: 'center',
 						alignItems: 'center',
 					}}
-				/> */}
+				/>
 				<TouchableOpacity style={globalStyles.baseBtn}>
 					<Text style={globalStyles.btnText}>Find the next treasure</Text>
 				</TouchableOpacity>
