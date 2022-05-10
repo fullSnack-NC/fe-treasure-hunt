@@ -17,44 +17,37 @@ const geolib = require('geolib');
 
 const CurrentWaypoint = ({ navigation }) => {
 	const [CurrentWaypoint_id, setCurrentWaypoint_id] = useState(0);
-	const waypointPositions = [
+  const waypointPositions = [
 		{
 			wayPoint_id: 1,
-			latitude: 53.839142,
-			longitude: -1.499168,
-			latitudeDelta: 0.01,
-			longitudeDelta: 0.01,
-		},
-		{
-			wayPoint_id: 2,
 			latitude: 53.838172,
 			longitude: -1.503277,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
 		},
 		{
-			wayPoint_id: 3,
+			wayPoint_id: 2,
 			latitude: 53.837907,
 			longitude: -1.499438,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
 		},
 		{
-			wayPoint_id: 4,
+			wayPoint_id: 3,
 			latitude: 53.83561,
 			longitude: -1.497038,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
 		},
 		{
-			wayPoint_id: 5,
+			wayPoint_id: 4,
 			latitude: 53.837088,
 			longitude: -1.495215,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
 		},
 		{
-			wayPoint_id: 6,
+			wayPoint_id: 5,
 			latitude: 53.839485,
 			longitude: -1.497238,
 			latitudeDelta: 0.01,
@@ -62,9 +55,7 @@ const CurrentWaypoint = ({ navigation }) => {
 		},
 	];
 
-	console.log(waypointPositions[0]);
-  const [isLoading, setIsLoading] = useState(true);
-  
+	const [isLoading, setIsLoading] = useState(true);
 	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(waypointPositions[0]);
 	const [location, setLocation] = useState({
 		latitude: 0,
@@ -76,7 +67,7 @@ const CurrentWaypoint = ({ navigation }) => {
 		latitudeDelta: 0.003922,
 		longitudeDelta: 0.003421,
 	});
-
+	const [acorns, setAcorns] = useState(0);
 	const [errorMsg, setErrorMsg] = useState(null);
 	const apiKey = REACT_APP_MAPS_API_KEY;
 	const screenWidth = Dimensions.get('window').width;
@@ -146,7 +137,6 @@ const CurrentWaypoint = ({ navigation }) => {
 		return () => clearTimeout(timer);
 	}, [location, region, distance]);
 
-
 	// useEffect(() => {
 	// 	getWaypointByMapID(map_id)
 	// 		.then((data) => {
@@ -160,15 +150,50 @@ const CurrentWaypoint = ({ navigation }) => {
 	// 			setIsLoading(false);
 	// 		});
 	// }, []);
+	const incrementAcorn = () => {
+		setAcorns((currAcorns) => currAcorns + 1);
+	};
+	const generateAcornsArr = () => {
+		let acornImgs = [];
+		for (let i = 0; i < acorns; i++) {
+			acornImgs.push('../assets/acorn.png');
+		}
+		return acornImgs;
+	};
+
+	// const acornMapedImg = () => {
+	// 	return acornImgs.map((img) => {
+	// 		return <Image source={require(img)} key={dest.Image} style={{ height: 20, width: 20 }} resizeMode='contain' />;
+	// 	});
+	// };
+	// console.log(acornMapedImg);
+	{
+		/* 
+        const list = () => {
+          return array.map((element) => {
+            return (
+              <View key={element.key} style={{margin: 10}}>
+                <Text>{element.title}</Text>
+                <Text>{element.subtitle}</Text>
+              </View>
+            );
+         });
+  }; */
+	}
+
+	{
+		/* return <View>{list()}</View>;
+		 */
+	}
 
 	const handlePress = () => {
 		let newID = CurrentWaypoint_id + 1;
 		setCurrentWaypoint_id(newID);
-
+		incrementAcorn();
+		generateAcornsArr();
 		if (newID === waypointPositions.length) {
 			return navigation.push('Certificate');
 		}
-
 		setcurrentWaypointMarker(waypointPositions[newID]);
 	};
 
@@ -230,6 +255,10 @@ const CurrentWaypoint = ({ navigation }) => {
 						<Text>{distanceMsg}</Text>
 					</MapView>
 				)}
+
+				{/* <View>{acornMapedImg}</View> */}
+				<Text>{acorns}</Text>
+
 				<Text> Swipe for Clue!⬅️ &lt;&lt;</Text>
 				{distance < 40 && (
 					<TouchableOpacity style={globalStyles.baseBtn} onPress={() => handlePress()}>
