@@ -1,22 +1,22 @@
-import { View, Text, Button, Image, StyleSheet, Vibration } from "react-native";
-import { Audio } from "expo-av";
-import React, { useState } from "react";
+import { View, Text, Button, Image, StyleSheet, Vibration } from 'react-native';
+import { Audio } from 'expo-av';
+import React, { useState } from 'react';
 
 const styles = StyleSheet.create({
   container: {
     paddingTop: 10,
     flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   welcomeImage: {
     flex: 1,
-    width: "80%",
+    width: '80%',
   },
   button: {
-    width: "70%",
-    backgroundColor: "blue",
+    width: '70%',
+    backgroundColor: 'blue',
   },
 });
 
@@ -25,7 +25,7 @@ const Welcome = ({ navigation }) => {
 
   async function playSound() {
     const { sound } = await Audio.Sound.createAsync(
-      require("../assets/sounds/power-up.wav")
+      require('../assets/sounds/power-up.wav')
     );
     setSound(sound);
     await sound.playAsync();
@@ -40,7 +40,7 @@ const Welcome = ({ navigation }) => {
   }, [sound]);
 
   const duration = 1000;
-  navigateGo = () => navigation.navigate("GamePage");
+  navigateGo = () => navigation.navigate('GamePage');
   vibeGo = () => Vibration.vibrate(duration);
   navigateBundle = () => {
     this.navigateGo();
@@ -48,7 +48,7 @@ const Welcome = ({ navigation }) => {
     playSound();
   };
 
-  locationGo = () => navigation.navigate("Locations");
+  locationGo = () => navigation.navigate('Locations');
   vibeGo = () => Vibration.vibrate(duration);
   locationBundle = () => {
     this.locationGo();
@@ -56,7 +56,16 @@ const Welcome = ({ navigation }) => {
     playSound();
   };
 
+  certificateGo = () => navigation.navigate('Certificate');
+  vibeGo = () => Vibration.vibrate(duration);
+  certificateBundle = () => {
+    this.certificateGo();
+    this.vibeGo();
+    playSound();
+  };
+
   return (
+
 		<View style={styles.container}>
 			<Text>Welcome to Treasure Hunt</Text>
 			<Image style={styles.welcomeImage} source={require('../assets/welcome.png')} resizeMode='contain' />
@@ -64,7 +73,12 @@ const Welcome = ({ navigation }) => {
 			<Button style={styles.button} title='Locations' onPress={() => this.locationBundle()} />
 			{/* <Button
         style={styles.button}
-        title="Go to game page"
+        title='Go to certificate page'
+        onPress={() => this.certificateBundle()}
+      />
+      <Button
+        style={styles.button}
+        title='Go to game page'
         onPress={() => this.navigateBundle()}
       /> */}
 		</View>
