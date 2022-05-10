@@ -1,17 +1,17 @@
-import axios from 'axios';
+import axios from "axios";
 
 const parksApi = axios.create({
-	baseURL: 'https://be-treasure-hunt.herokuapp.com/api',
+  baseURL: "https://fullsnack-treasure-hunt.herokuapp.com/api",
 });
 
 export const getParks = () => {
-	return parksApi.get('/parks').then(({ data }) => {
-		return data;
-	});
+  return parksApi.get("/parks").then(({ data }) => {
+    return data;
+  });
 };
 
 export const getMapsByParkID = (park_id) => {
-	return parksApi.get(`/maps/${park_id}`).then(({ data }) => {
-		return data.maps;
-	});
+  return parksApi.get(`/maps/${park_id}`).then(({ data }) => {
+    return data.maps;
+  });
 };
