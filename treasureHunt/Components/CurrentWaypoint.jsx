@@ -1,4 +1,11 @@
-import { View, Text, Image, ScrollView, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  Dimensions,
+  Button,
+} from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useState, useEffect } from 'react';
@@ -175,6 +182,7 @@ const CurrentWaypoint = ({ navigation }) => {
       <View
         // pointerEvents='none'
         style={{
+          paddingVerticle: 50,
           flex: 1,
           height: screenHeight,
           width: screenWidth,
@@ -186,12 +194,13 @@ const CurrentWaypoint = ({ navigation }) => {
         {location && (
           <MapView
             style={{
-              height: screenHeight - 50,
+              height: screenHeight - 100,
               width: screenWidth - 50,
             }}
             provider={PROVIDER_GOOGLE}
             apiKey={apiKey}
-            initialRegion={region}
+            // initialRegion={region}
+            region={region}
             showsUserLocation={true}
             scrollEnabled={true}
             rotateEnabled={true}
@@ -203,6 +212,15 @@ const CurrentWaypoint = ({ navigation }) => {
             </Text>
             <Text>{distanceMsg}</Text>
           </MapView>
+        )}
+        <Text> Swipe for Clue!⬅️ &lt;&lt;</Text>
+        {distance < 40 && (
+          <TouchableOpacity
+            style={globalStyles.baseBtn}
+            onPress={() => handlePress()}
+          >
+            <Text style={globalStyles.btnText}>Found</Text>
+          </TouchableOpacity>
         )}
       </View>
     </ScrollView>
