@@ -5,17 +5,7 @@ import { useState, useEffect } from 'react';
 import { REACT_APP_MAPS_API_KEY } from '@env';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import globalStyles from '../css/style';
-import { StyleSheet } from 'react-native';
-
 const geolib = require('geolib');
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-});
 
 const CurrentWaypoint = ({ navigation }) => {
 	const [CurrentWaypoint_id, setCurrentWaypoint_id] = useState(0);
@@ -56,13 +46,11 @@ const CurrentWaypoint = ({ navigation }) => {
 			longitudeDelta: 0.01,
 		},
 	];
-
 	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(waypointPositions[0]);
 	const [location, setLocation] = useState({
 		latitude: 0,
 		longitude: 0,
 	});
-
 	const [region, setRegion] = useState({
 		latitude: 53.839277,
 		longitude: -1.496882,
@@ -111,16 +99,21 @@ const CurrentWaypoint = ({ navigation }) => {
 
 		if (300 < distance && distance <= 500) {
 			setBackgroundColor('#2B4279');
-			// setDistanceMsg('');
+			setDistanceMsg('You’re freezing cold…brrrrrr');
 		} else if (200 < distance && distance <= 300) {
 			setBackgroundColor('#65428C');
+			setDistanceMsg('You’re cold');
 		} else if (150 < distance && distance <= 200) {
 			setBackgroundColor('#A1378B');
+			setDistanceMsg('You’re warm');
 		} else if (80 < distance && distance <= 150) {
+			setDistanceMsg('It’s toasty warm');
 			setBackgroundColor('#D42374');
 		} else if (40 < distance && distance <= 80) {
+			setDistanceMsg('You’re quite hot… be careful you don’t burn');
 			setBackgroundColor('#F62B4C');
 		} else if (0 < distance && distance < 40) {
+			setDistanceMsg('You’re red hot!');
 			setBackgroundColor('#FF5800');
 		}
 
@@ -197,9 +190,8 @@ const CurrentWaypoint = ({ navigation }) => {
 						mapType='satellite'
 					>
 						<Marker coordinate={currentWaypointMarker} />
-						<Text style={{ color: 'white', fontSize: 40 }}>
-							{distanceMsg} {distance}m away!
-						</Text>
+						<Text style={{ color: 'white', fontSize: 40 }}>{distance}m away!</Text>
+						<Text>{distanceMsg}</Text>
 					</MapView>
 				)}
 			</View>
