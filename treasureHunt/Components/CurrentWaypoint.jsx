@@ -184,7 +184,7 @@ const CurrentWaypoint = ({ navigation }) => {
 		<ScrollView horizontal={true} pagingEnabled={true}>
 			<View>
 				<Image
-					source={require(`../assets/waypoint-images/${map_id}_${CurrentWaypoint_id}.png`)}
+					source={require(`../assets/waypoint-images/1_1.png`)}
 					resizeMode='contain'
 					style={{
 						flex: 1,
