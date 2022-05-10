@@ -36,14 +36,24 @@ const HuntList = ({ route, navigation }) => {
         return (
           <View key={map.map_id}>
             <Text>{map.map_name}</Text>
+            {/* if (map.map_id === 1) return (
             <Image
-              source={require(`../assets/map-images/${map.map_id}.jpg`)}
+              source={require(`../assets/map-images/1.jpeg`)}
               style={{ height: 50, width: 150 }}
             />
+            else if (map.map_id === 2) return (
+            <Image
+              source={require(`../assets/map-images/2.jpeg`)}
+              style={{ height: 50, width: 150 }}
+            />
+            else if (map.map_id === 3) return (
+            <Image
+              source={require(`../assets/map-images/3.jpeg`)}
+              style={{ height: 50, width: 150 }}
+            /> */}
             <Text>{map.length} KM</Text>
             <Text>{map.est_comp_time} mins</Text>
             <Text>Suitable for {map.age_min} +</Text>
-
             <Button
               title='Select this Hunt'
               onPress={() =>
