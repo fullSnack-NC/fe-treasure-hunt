@@ -5,17 +5,7 @@ import { useState, useEffect } from 'react';
 import { REACT_APP_MAPS_API_KEY } from '@env';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import globalStyles from '../css/style';
-import { StyleSheet } from 'react-native';
-
 const geolib = require('geolib');
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-});
 
 const CurrentWaypoint = ({ navigation }) => {
 	const [CurrentWaypoint_id, setCurrentWaypoint_id] = useState(0);
@@ -56,7 +46,6 @@ const CurrentWaypoint = ({ navigation }) => {
 			longitudeDelta: 0.01,
 		},
 	];
-
 	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(
 		waypointPositions[0]
 	);
@@ -64,7 +53,6 @@ const CurrentWaypoint = ({ navigation }) => {
 		latitude: 0,
 		longitude: 0,
 	});
-
 	const [region, setRegion] = useState({
 		latitude: 53.839277,
 		longitude: -1.496882,
@@ -211,8 +199,9 @@ const CurrentWaypoint = ({ navigation }) => {
 					>
 						<Marker coordinate={currentWaypointMarker} />
 						<Text style={{ color: 'white', fontSize: 40 }}>
-							{distanceMsg} {distance}m away!
+							{distance}m away!
 						</Text>
+						<Text>{distanceMsg}</Text>
 					</MapView>
 				)}
 			</View>
