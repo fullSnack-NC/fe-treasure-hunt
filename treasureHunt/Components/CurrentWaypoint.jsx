@@ -1,4 +1,11 @@
-import { View, Text, Image, ScrollView, Dimensions } from 'react-native';
+import {
+	View,
+	Text,
+	Image,
+	ScrollView,
+	Dimensions,
+	Button,
+} from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useState, useEffect } from 'react';
@@ -150,28 +157,6 @@ const CurrentWaypoint = ({ navigation }) => {
 
 	return (
 		<ScrollView horizontal={true} pagingEnabled={true}>
-			<View>
-				<Image
-					source={require('../assets/waypoint-images/Waypoint_1_Roundhay_Park.png')}
-					resizeMode='contain'
-					style={{
-						flex: 1,
-						height: '90%',
-						width: screenWidth,
-						justifyContent: 'center',
-						alignItems: 'center',
-					}}
-				/>
-				<TouchableOpacity
-					style={globalStyles.baseBtn}
-					onPress={() => handlePress()}
-				>
-					<Text style={globalStyles.btnText}>Found</Text>
-				</TouchableOpacity>
-				<TouchableOpacity style={globalStyles.baseBtn}>
-					<Text style={globalStyles.btnText}>Find the next treasure</Text>
-				</TouchableOpacity>
-			</View>
 			<View
 				// pointerEvents='none'
 				style={{
@@ -202,6 +187,10 @@ const CurrentWaypoint = ({ navigation }) => {
 							{distance}m away!
 						</Text>
 						<Text>{distanceMsg}</Text>
+						<Button
+							title='CluePage'
+							onPress={() => navigation.goBack()}
+						></Button>
 					</MapView>
 				)}
 			</View>

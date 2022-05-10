@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 import CurrentWaypoint from './CurrentWaypoint';
 
 const GamePage = ({ navigation }) => {
-  return (
+	return (
 		<View>
 			<CurrentWaypoint navigation={navigation} />
 		</View>
