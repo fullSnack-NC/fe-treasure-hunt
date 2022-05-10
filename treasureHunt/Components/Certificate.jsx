@@ -4,6 +4,7 @@ const Certificate = () => {
 	return (
 		<View>
 			<Text>Certificate</Text>
+			<Text>Good work park explorer!!!!!</Text>
 		</View>
 	);
 };
