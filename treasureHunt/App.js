@@ -7,10 +7,12 @@ import HuntList from './Components/HuntList';
 import GameLaunchHandover from './Components/GameLaunchHandover';
 import GamePage from './Components/GamePage';
 import Certificate from './Components/Certificate';
+import CluePage from './Components/CluePage';
+import CurrentWaypoint from './Components/CurrentWaypoint';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, navigation } from '@react-navigation/stack';
-import CluePage from './Components/CluePage';
+
 const Stack = createStackNavigator();
 export default function App() {
 	return (
@@ -34,8 +36,8 @@ export default function App() {
 					navigation={navigation}
 				/>
 				<Stack.Screen
-					name='GamePage'
-					component={GamePage}
+					name='CurrentWaypoint'
+					component={CurrentWaypoint}
 					navigation={navigation}
 				/>
 				<Stack.Screen name='Certificate' component={Certificate} />

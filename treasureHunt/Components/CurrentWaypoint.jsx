@@ -83,6 +83,7 @@ const CurrentWaypoint = ({ navigation }) => {
 	);
 	const [backgroundColor, setBackgroundColor] = useState('#2B4279');
 	const [distanceMsg, setDistanceMsg] = useState('');
+	const [navButton, setNavButton] = useState();
 
 	useEffect(() => {
 		async () => {

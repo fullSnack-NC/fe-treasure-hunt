@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 import { REACT_APP_MAPS_API_KEY } from '@env';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import globalStyles from '../css/style';
+import CurrentWaypoint from './CurrentWaypoint';
 
 const CluePage = ({ navigation }) => {
 	const screenWidth = Dimensions.get('window').width;
@@ -30,8 +31,8 @@ const CluePage = ({ navigation }) => {
 				}}
 			/>
 			<Button
-				title='Back to Map'
-				onPress={() => navigation.push('GamePage')}
+				title='View Map'
+				onPress={() => navigation.push('CurrentWaypoint')}
 			></Button>
 		</View>
 	);
