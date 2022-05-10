@@ -15,3 +15,9 @@ export const getMapsByParkID = (park_id) => {
     return data.maps;
   });
 };
+
+export const getWaypointByMapID = (map_id) => {
+	return parksApi.get(`/waypoints/${map_id}`).then(({ data }) => {
+		return data.waypoint;
+	});
+};

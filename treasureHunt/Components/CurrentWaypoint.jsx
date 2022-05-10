@@ -12,8 +12,10 @@ import { useState, useEffect } from 'react';
 import { REACT_APP_MAPS_API_KEY } from '@env';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import globalStyles from '../css/style';
+import { getWaypointByMapID } from '../utils/api';
 const geolib = require('geolib');
 
+<<<<<<< HEAD
 const CurrentWaypoint = ({ navigation }) => {
   const [CurrentWaypoint_id, setCurrentWaypoint_id] = useState(0);
   const waypointPositions = [
@@ -83,6 +85,81 @@ const CurrentWaypoint = ({ navigation }) => {
   );
   const [backgroundColor, setBackgroundColor] = useState('#2B4279');
   const [distanceMsg, setDistanceMsg] = useState('');
+=======
+const CurrentWaypoint = ({ navigation, route }) => {
+	const { map_id } = route.params;
+	const [CurrentWaypoint_id, setCurrentWaypoint_id] = useState(0);
+	// const waypointPositions = [
+	// 	{
+	// 		wayPoint_id: 1,
+	// 		latitude: 53.839277,
+	// 		longitude: -1.496882,
+	// 		latitudeDelta: 0.01,
+	// 		longitudeDelta: 0.01,
+	// 	},
+	// 	{
+	// 		wayPoint_id: 2,
+	// 		latitude: 53.837302,
+	// 		longitude: -1.498502,
+	// 		latitudeDelta: 0.01,
+	// 		longitudeDelta: 0.01,
+	// 	},
+	// 	{
+	// 		wayPoint_id: 3,
+	// 		latitude: 53.83808,
+	// 		longitude: -1.502912,
+	// 		latitudeDelta: 0.01,
+	// 		longitudeDelta: 0.01,
+	// 	},
+	// 	{
+	// 		wayPoint_id: 4,
+	// 		latitude: 53.838978,
+	// 		longitude: -1.499773,
+	// 		latitudeDelta: 0.01,
+	// 		longitudeDelta: 0.01,
+	// 	},
+	// 	{
+	// 		wayPoint_id: 5,
+	// 		latitude: 53.839108,
+	// 		longitude: -1.49662,
+	// 		latitudeDelta: 0.01,
+	// 		longitudeDelta: 0.01,
+	// 	},
+	// ];
+
+	const [waypoints, setWaypoints] = useState([]);
+
+	console.log(waypoints[0]);
+	const [isLoading, setIsLoading] = useState(true);
+	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(waypoints[0]);
+	const [location, setLocation] = useState({
+		latitude: 0,
+		longitude: 0,
+	});
+	const [region, setRegion] = useState({
+		latitude: 53.839277,
+		longitude: -1.496882,
+		latitudeDelta: 0.003922,
+		longitudeDelta: 0.003421,
+	});
+
+	const [errorMsg, setErrorMsg] = useState(null);
+	const apiKey = REACT_APP_MAPS_API_KEY;
+	const screenWidth = Dimensions.get('window').width;
+	const screenHeight = Dimensions.get('window').height;
+	const distance = geolib.getDistance(
+		{
+			latitude: location.latitude,
+			longitude: location.longitude,
+		},
+		{
+			latitude: currentWaypointMarker.waypoint_lat,
+			longitude: currentWaypointMarker.waypoint_long,
+		}
+	);
+	const [backgroundColor, setBackgroundColor] = useState('#2B4279');
+	const [distanceMsg, setDistanceMsg] = useState('');
+>>>>>>> working on implementing-waypoint API
 
   useEffect(() => {
     async () => {
@@ -136,6 +213,7 @@ const CurrentWaypoint = ({ navigation }) => {
     return () => clearTimeout(timer);
   }, [location, region, distance]);
 
+<<<<<<< HEAD
   const handlePress = () => {
     let newID = CurrentWaypoint_id + 1;
     setCurrentWaypoint_id(newID);
@@ -146,6 +224,32 @@ const CurrentWaypoint = ({ navigation }) => {
 
     setcurrentWaypointMarker(waypointPositions[newID]);
   };
+=======
+	useEffect(() => {
+		getWaypointByMapID(map_id)
+			.then((data) => {
+				setWaypoints(data);
+				setIsLoading(false);
+				setErrorMsg(null);
+			})
+			.catch((err) => {
+				console.log(err.response.data);
+				setErrorMsg({ err });
+				setIsLoading(false);
+			});
+	}, []);
+
+	const handlePress = () => {
+		let newID = CurrentWaypoint_id + 1;
+		setCurrentWaypoint_id(newID);
+
+		if (newID === waypoints.length) {
+			return navigation.push('Certificate');
+		}
+
+		setcurrentWaypointMarker(waypoints[newID]);
+	};
+>>>>>>> working on implementing-waypoint API
 
   let text = 'Waiting..';
 
@@ -155,6 +259,7 @@ const CurrentWaypoint = ({ navigation }) => {
     text = JSON.stringify(location);
   }
 
+<<<<<<< HEAD
   return (
     <ScrollView horizontal={true} pagingEnabled={true}>
       <View>
@@ -219,5 +324,66 @@ const CurrentWaypoint = ({ navigation }) => {
       </View>
     </ScrollView>
   );
+=======
+	return (
+		<ScrollView horizontal={true} pagingEnabled={true}>
+			<View>
+				{/* <Image
+					source={require('../assets/waypoint-images/Waypoint_1_Roundhay_Park.png')}
+					resizeMode='contain'
+					style={{
+						flex: 1,
+						height: '90%',
+						width: screenWidth,
+						justifyContent: 'center',
+						alignItems: 'center',
+					}}
+				/> */}
+				<TouchableOpacity style={globalStyles.baseBtn}>
+					<Text style={globalStyles.btnText}>Find the next treasure</Text>
+				</TouchableOpacity>
+			</View>
+			<View
+				// pointerEvents='none'
+				style={{
+					paddingVerticle: 50,
+					flex: 1,
+					height: screenHeight,
+					width: screenWidth,
+					justifyContent: 'center',
+					alignItems: 'center',
+					backgroundColor: backgroundColor,
+				}}
+			>
+				{location && (
+					<MapView
+						style={{
+							height: screenHeight - 100,
+							width: screenWidth - 50,
+						}}
+						provider={PROVIDER_GOOGLE}
+						apiKey={apiKey}
+						// initialRegion={region}
+						region={region}
+						showsUserLocation={true}
+						scrollEnabled={true}
+						rotateEnabled={true}
+						mapType='satellite'
+					>
+						<Marker coordinate={currentWaypointMarker} />
+						<Text style={{ color: 'white', fontSize: 40 }}>{distance}m away!</Text>
+						<Text>{distanceMsg}</Text>
+					</MapView>
+				)}
+				<Text> Swipe for Clue!⬅️ &lt;&lt;</Text>
+				{distance < 40 && (
+					<TouchableOpacity style={globalStyles.baseBtn} onPress={() => handlePress()}>
+						<Text style={globalStyles.btnText}>Found</Text>
+					</TouchableOpacity>
+				)}
+			</View>
+		</ScrollView>
+	);
+>>>>>>> working on implementing-waypoint API
 };
 export default CurrentWaypoint;

@@ -42,9 +42,9 @@ const HuntList = ({ route, navigation }) => {
 
 						<Button
 							title='Select this Hunt'
-							onPress={() =>
-								navigation.push('GameLaunchHandover', { map_id: map.map_id })
-							}
+							onPress={() => {
+								navigation.push('GameLaunchHandover', { map_id: map.map_id });
+							}}
 						/>
 					</View>
 				);
