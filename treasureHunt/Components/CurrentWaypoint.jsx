@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
 	acornContainer: {
 		flexDirection: 'column',
 	},
+	acorn: { height: 40, width: 40 },
 });
 
 const CurrentWaypoint = ({ navigation }) => {
@@ -23,6 +24,7 @@ const CurrentWaypoint = ({ navigation }) => {
 			longitude: -1.503277,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
+			imgPath: require('../assets/waypoint-images/1_1.png'),
 		},
 		{
 			wayPoint_id: 2,
@@ -30,6 +32,7 @@ const CurrentWaypoint = ({ navigation }) => {
 			longitude: -1.499438,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
+			imgPath: require('../assets/waypoint-images/1_2.png'),
 		},
 		{
 			wayPoint_id: 3,
@@ -37,6 +40,7 @@ const CurrentWaypoint = ({ navigation }) => {
 			longitude: -1.497038,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
+			imgPath: require('../assets/waypoint-images/1_3.png'),
 		},
 		{
 			wayPoint_id: 4,
@@ -44,6 +48,7 @@ const CurrentWaypoint = ({ navigation }) => {
 			longitude: -1.495215,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
+			imgPath: require('../assets/waypoint-images/1_4.png'),
 		},
 		{
 			wayPoint_id: 5,
@@ -51,9 +56,9 @@ const CurrentWaypoint = ({ navigation }) => {
 			longitude: -1.497238,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
+			imgPath: require('../assets/waypoint-images/1_5.png'),
 		},
 	];
-
 	const [isLoading, setIsLoading] = useState(true);
 	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(waypointPositions[0]);
 	const [location, setLocation] = useState({
@@ -67,6 +72,7 @@ const CurrentWaypoint = ({ navigation }) => {
 		longitudeDelta: 0.003421,
 	});
 	const [acorns, setAcorns] = useState(0);
+	const [acornImgs, setAcornImgs] = useState([]);
 	const [errorMsg, setErrorMsg] = useState(null);
 	const apiKey = REACT_APP_MAPS_API_KEY;
 	const screenWidth = Dimensions.get('window').width;
@@ -83,11 +89,7 @@ const CurrentWaypoint = ({ navigation }) => {
 	);
 	const [backgroundColor, setBackgroundColor] = useState('#2B4279');
 	const [distanceMsg, setDistanceMsg] = useState('');
-	const acornImgs = [];
-	const acorn = <Image style={{ height: 30, width: 30 }} source={require('../assets/acorn.png')} />;
-	for (i = 0; i < acorns; i++) {
-		acornImgs.push(acorn);
-	}
+
 	useEffect(() => {
 		async () => {
 			let { status } = await Location.requestForegroundPermissionsAsync();
@@ -153,14 +155,20 @@ const CurrentWaypoint = ({ navigation }) => {
 	// 			setIsLoading(false);
 	// 		});
 	// }, []);
-	const incrementAcorn = () => {
-		setAcorns((currAcorns) => currAcorns + 1);
-	};
 
+	const incrementAcorn = () => {
+		const acorn = <Image key={CurrentWaypoint_id} style={styles.acorn} source={require('../assets/acorn.png')} />;
+		setAcorns((currAcorns) => currAcorns + 1);
+		setAcornImgs((currAcorns) => {
+			const existingAcorns = [...currAcorns];
+			return [existingAcorns, acorn];
+		});
+	};
 	const handlePress = () => {
 		let newID = CurrentWaypoint_id + 1;
 		setCurrentWaypoint_id(newID);
 		incrementAcorn();
+
 		if (newID === waypointPositions.length) {
 			return navigation.push('Certificate');
 		}
@@ -179,7 +187,7 @@ const CurrentWaypoint = ({ navigation }) => {
 		<ScrollView horizontal={true} pagingEnabled={true}>
 			<View>
 				<Image
-					source={require(`../assets/waypoint-images/1_1.png`)}
+					source={waypointPositions[CurrentWaypoint_id].imgPath}
 					resizeMode='contain'
 					style={{
 						flex: 1,
@@ -237,5 +245,5 @@ const CurrentWaypoint = ({ navigation }) => {
 			</View>
 		</ScrollView>
 	);
-};
+};;;
 export default CurrentWaypoint;
