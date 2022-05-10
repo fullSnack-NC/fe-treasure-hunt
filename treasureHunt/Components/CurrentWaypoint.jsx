@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  Dimensions,
-  Button,
-} from 'react-native';
+import { View, Text, Image, ScrollView, Dimensions, StyleSheet } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useState, useEffect } from 'react';
@@ -15,9 +8,15 @@ import globalStyles from '../css/style';
 import { getWaypointByMapID } from '../utils/api';
 const geolib = require('geolib');
 
+const styles = StyleSheet.create({
+	acornContainer: {
+		flexDirection: 'column',
+	},
+});
+
 const CurrentWaypoint = ({ navigation }) => {
 	const [CurrentWaypoint_id, setCurrentWaypoint_id] = useState(0);
-  const waypointPositions = [
+	const waypointPositions = [
 		{
 			wayPoint_id: 1,
 			latitude: 53.838172,
@@ -84,7 +83,11 @@ const CurrentWaypoint = ({ navigation }) => {
 	);
 	const [backgroundColor, setBackgroundColor] = useState('#2B4279');
 	const [distanceMsg, setDistanceMsg] = useState('');
-
+	const acornImgs = [];
+	const acorn = <Image style={{ height: 30, width: 30 }} source={require('../assets/acorn.png')} />;
+	for (i = 0; i < acorns; i++) {
+		acornImgs.push(acorn);
+	}
 	useEffect(() => {
 		async () => {
 			let { status } = await Location.requestForegroundPermissionsAsync();
@@ -153,44 +156,11 @@ const CurrentWaypoint = ({ navigation }) => {
 	const incrementAcorn = () => {
 		setAcorns((currAcorns) => currAcorns + 1);
 	};
-	const generateAcornsArr = () => {
-		let acornImgs = [];
-		for (let i = 0; i < acorns; i++) {
-			acornImgs.push('../assets/acorn.png');
-		}
-		return acornImgs;
-	};
-
-	// const acornMapedImg = () => {
-	// 	return acornImgs.map((img) => {
-	// 		return <Image source={require(img)} key={dest.Image} style={{ height: 20, width: 20 }} resizeMode='contain' />;
-	// 	});
-	// };
-	// console.log(acornMapedImg);
-	{
-		/* 
-        const list = () => {
-          return array.map((element) => {
-            return (
-              <View key={element.key} style={{margin: 10}}>
-                <Text>{element.title}</Text>
-                <Text>{element.subtitle}</Text>
-              </View>
-            );
-         });
-  }; */
-	}
-
-	{
-		/* return <View>{list()}</View>;
-		 */
-	}
 
 	const handlePress = () => {
 		let newID = CurrentWaypoint_id + 1;
 		setCurrentWaypoint_id(newID);
 		incrementAcorn();
-		generateAcornsArr();
 		if (newID === waypointPositions.length) {
 			return navigation.push('Certificate');
 		}
@@ -255,10 +225,9 @@ const CurrentWaypoint = ({ navigation }) => {
 						<Text>{distanceMsg}</Text>
 					</MapView>
 				)}
-
-				{/* <View>{acornMapedImg}</View> */}
+				<View>{acornImgs}</View>
+				<View style={styles.acornContainer}></View>
 				<Text>{acorns}</Text>
-
 				<Text> Swipe for Clue!⬅️ &lt;&lt;</Text>
 				{distance < 40 && (
 					<TouchableOpacity style={globalStyles.baseBtn} onPress={() => handlePress()}>
