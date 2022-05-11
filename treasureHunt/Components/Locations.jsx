@@ -16,28 +16,26 @@ import { Audio } from "expo-av";
 const { width, height } = Dimensions.get("window");
 
 const Locations = ({ navigation }) => {
-  const [locations, setLocations] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [sound, setSound] = React.useState();
+	const [locations, setLocations] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState(null);
+	const [sound, setSound] = React.useState();
 
-  async function playSound() {
-    const { sound } = await Audio.Sound.createAsync(
-      require("../assets/sounds/power-up.wav")
-    );
-    setSound(sound);
-    await sound.playAsync();
-  }
+	async function playSound() {
+		const { sound } = await Audio.Sound.createAsync(require('../assets/sounds/power-up.wav'));
+		setSound(sound);
+		await sound.playAsync();
+	}
 
-  React.useEffect(() => {
-    return sound
-      ? () => {
-          sound.unloadAsync();
-        }
-      : undefined;
-  }, [sound]);
+	React.useEffect(() => {
+		return sound
+			? () => {
+					sound.unloadAsync();
+			  }
+			: undefined;
+	}, [sound]);
 
-  const duration = 1000;
+	const duration = 1000;
 
 	const parkImage = [
 		{
@@ -91,64 +89,58 @@ const Locations = ({ navigation }) => {
 				style={styles.image}
 				imageStyle={styles.image_imageStyle}
 			>
-				<View>
-					<ScrollView style={styles.cardList}>
+				<>
+					<ScrollView style={[styles.cardList]}>
 						{/* <Image
 						source={require('../assets/view-images/park-life-logo.png')}
 						resizeMode='contain'
 						style={styles.image2}
 					></Image> */}
 
-            {locations.map((location) => {
-              const park_id = location.park_id;
-              const amenities = JSON.parse(location.amenities);
-              vibeGo = () => Vibration.vibrate(duration);
-              touchGo = () => {
-                this.vibeGo();
-                playSound();
-                setTimeout(() => {
-                  navigation.push("HuntList", { park_id: park_id });
-                }, 1000);
-              };
-              return (
-                <TouchableOpacity key={park_id} onPress={() => this.touchGo()}>
-                  <View
-                    style={[
-                      cardStyles.container,
-                      styles.materialCardWithImageAndTitle,
-                    ]}
-                  >
-                    <View style={cardStyles.cardBody}>
-                      <View style={cardStyles.bodyContent}>
-                        <Text style={cardStyles.titleStyle}>
-                          {location.park_name}
-                        </Text>
-                        <Text style={cardStyles.subtitleStyle}>
-                          {amenities.accessible ? (
-                            <Text>Accessible 🦽</Text>
-                          ) : null}
-                          {amenities.lake ? <Text>Lake! 💧</Text> : null}
-                          {amenities.wildlife ? (
-                            <Text>Wildlife! 🦔</Text>
-                          ) : null}
-                          {amenities.toilet ? <Text>Toilet! 🚻</Text> : null}
-                          {amenities.food ? <Text>Food! 🍦</Text> : null}
-                        </Text>
-                      </View>
-                      <Image
-                        style={cardStyles.cardItemImagePlace}
-                        source={parkImage[park_id - 1].image}
-                      ></Image>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              );
-            })}
-        </ScrollView>
-          </View>
-      </ImageBackground>
-    </View>
-  );
+						{locations.map((location) => {
+							const park_id = location.park_id;
+							const amenities = JSON.parse(location.amenities);
+							// vibeGo = () => Vibration.vibrate(duration);
+							// touchGo = () => {
+							//   this.vibeGo();
+							//   playSound();
+							//   setTimeout(() => {
+							//     navigation.push("HuntList", { park_id: park_id });
+							//   }, 1000);
+							// };
+							return (
+								// <TouchableOpacity key={park_id} onPress={() => this.touchGo()}>
+								<TouchableOpacity
+									key={park_id}
+									onPress={() =>
+										setTimeout(() => {
+											navigation.push('HuntList', { park_id: park_id });
+										}, 1000)
+									}
+								>
+									<View style={[cardStyles.container, styles.materialCardWithImageAndTitle]}>
+										<View style={cardStyles.cardBody}>
+											<View style={cardStyles.bodyContent}>
+												<Text style={cardStyles.titleStyle}>{location.park_name}</Text>
+												<Text style={cardStyles.subtitleStyle}>
+													{amenities.accessible ? <Text>Accessible 🦽</Text> : null}
+													{amenities.lake ? <Text>Lake! 💧</Text> : null}
+													{amenities.wildlife ? <Text>Wildlife! 🦔</Text> : null}
+													{amenities.toilet ? <Text>Toilet! 🚻</Text> : null}
+													{amenities.food ? <Text>Food! 🍦</Text> : null}
+												</Text>
+											</View>
+											<Image style={cardStyles.cardItemImagePlace} source={parkImage[park_id - 1].image}></Image>
+										</View>
+									</View>
+								</TouchableOpacity>
+							);
+						})}
+					</ScrollView>
+				</>
+			</ImageBackground>
+		</View>
+	);
 };
 
 const styles = StyleSheet.create({
@@ -173,6 +165,7 @@ const styles = StyleSheet.create({
 	// },
 	cardList: {
 		margin: 10,
+
 		// flexDirection: 'column',
 	},
 	materialCardWithImageAndTitle: {
