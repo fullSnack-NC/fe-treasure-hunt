@@ -113,13 +113,13 @@ const Locations = ({ navigation }) => {
 										<View style={cardStyles.cardBody}>
 											<View style={cardStyles.bodyContent}>
 												<Text style={cardStyles.titleStyle}>{location.park_name}</Text>
-												<Text style={cardStyles.subtitleStyle}>
-													{amenities.accessible ? <Text>🦽</Text> : null}
-													{amenities.lake ? <Text>💧</Text> : null}
-													{amenities.wildlife ? <Text> 🦔</Text> : null}
-													{amenities.toilet ? <Text> 🚻</Text> : null}
-													{amenities.food ? <Text> 🍦</Text> : null}
-												</Text>
+												<View style={cardStyles.amenities}>
+													{amenities.accessible ? <Text style={cardStyles.amenitiesIcon}>🦽</Text> : null}
+													{amenities.lake ? <Text style={cardStyles.amenitiesIcon}>💧</Text> : null}
+													{amenities.wildlife ? <Text style={cardStyles.amenitiesIcon}> 🦔</Text> : null}
+													{amenities.toilet ? <Text style={cardStyles.amenitiesIcon}> 🚻</Text> : null}
+													{amenities.food ? <Text style={cardStyles.amenitiesIcon}> 🍦</Text> : null}
+												</View>
 											</View>
 											<Image style={cardStyles.cardItemImagePlace} source={parkImage[park_id - 1].image}></Image>
 										</View>
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
 	// },
 	cardList: {
 		margin: 10,
-		marginTop: 20,
+		marginTop: 50,
 
 		// flexDirection: 'column',
 	},
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
 const cardStyles = StyleSheet.create({
 	container: {
 		borderWidth: 1,
-		borderRadius: 23,
+		borderRadius: 20,
 		borderColor: '#CCC',
 		flexWrap: 'nowrap',
 		backgroundColor: 'rgba(124,168,91,1)',
@@ -216,18 +216,26 @@ const cardStyles = StyleSheet.create({
 		color: '#fff',
 		paddingBottom: 12,
 	},
-	subtitleStyle: {
-		fontSize: 20,
+	amenities: {
 		color: '#000',
 		lineHeight: 16,
 		opacity: 1,
+		flexDirection: 'row',
+		fontSize: 30,
+		borderRadius: 5,
+		borderTopWidth: 1,
+		borderColor: '#fff',
+		paddingTop: 10,
+	},
+	amenitiesIcon: {
+		fontSize: 25,
 	},
 	cardItemImagePlace: {
 		backgroundColor: '#ccc',
 		height: 117,
 		width: 159,
 		margin: 16,
-		borderRadius: 19,
+		borderRadius: 10,
 	},
 });
 
