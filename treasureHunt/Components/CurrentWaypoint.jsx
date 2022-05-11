@@ -68,7 +68,7 @@ const CurrentWaypoint = ({ navigation }) => {
   const [sound, setSound] = React.useState();
   async function playSound() {
     const { sound } = await Audio.Sound.createAsync(
-      require("../assets/sounds/power-up.wav")
+      require("../assets/sounds/waypoint-beep.wav")
     );
     setSound(sound);
     await sound.playAsync();
@@ -190,45 +190,73 @@ const CurrentWaypoint = ({ navigation }) => {
       //setBackgroundColor('#2B4279');
       setBackgroundColor("#0662CE");
       setDistanceMsg("You’re freezing cold…brrrrrr");
-      playSound(durationF);
-      playSound(durationF);
+      vibeGo(durationF);
+      vibeGo(durationF);
+      playSound();
     } else if (200 < distance && distance <= 300) {
       //setBackgroundColor('#65428C');
       setBackgroundColor("#3781D7");
       setDistanceMsg("You’re cold");
-      playSound(durationE);
-      playSound(durationE);
+      vibeGo(durationE);
+      vibeGo(durationE);
+      playSound();
+      playSound();
     } else if (150 < distance && distance <= 200) {
       //setBackgroundColor('#A1378B');
       setBackgroundColor("#B3EAF2");
       setDistanceMsg("You're warm");
-      playSound(durationD);
-      playSound(durationD);
+      vibeGo(durationD);
+      vibeGo(durationD);
+      playSound();
+      playSound();
+      playSound();
     } else if (80 < distance && distance <= 150) {
       //setBackgroundColor('#D42374');
       setBackgroundColor("#FFC899");
       setDistanceMsg("It’s toasty warm");
-      playSound(durationC);
-      playSound(durationC);
+      vibeGo(durationC);
+      vibeGo(durationC);
+      playSound();
+      playSound();
+      playSound();
+      playSound();
     } else if (40 < distance && distance <= 80) {
       //setBackgroundColor('#F62B4C');
       setBackgroundColor("#FFAD66");
       setDistanceMsg("You’re quite hot… be careful you don’t burn");
-      playSound(durationB);
-      playSound(durationB);
+      vibeGo(durationB);
+      vibeGo(durationB);
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+      playSound();
     } else if (0 <= distance && distance < 40) {
       //setBackgroundColor('#FF5800');
       setBackgroundColor("#FF9232");
       setDistanceMsg("You’re red hot!");
-      playSound(durationA);
-      playSound(durationA);
+      vibeGo(durationA);
+      vibeGo(durationA);
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+      playSound();
     } else if (0 === distance) {
       // setBackgroundColor('#FF5800');
       setBackgroundColor("#FF7700");
       setDistanceMsg("Scorching! You have arrived!");
-      playSound(durationA);
-      playSound(durationA);
-      playSound(durationA);
+      vibeGo(durationA);
+      vibeGo(durationA);
+      vibeGo(durationA);
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+      playSound();
     }
 
     const timer = setTimeout(() => {
