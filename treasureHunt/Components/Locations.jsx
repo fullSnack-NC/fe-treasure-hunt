@@ -4,20 +4,40 @@ import React, { useEffect, useState, Component } from "react";
 import {
   View,
   Text,
-  Button,
   Image,
   StyleSheet,
   ImageBackground,
   Dimensions,
   ScrollView,
   TouchableOpacity,
+  Vibration,
 } from "react-native";
+import { Audio } from "expo-av";
 const { width, height } = Dimensions.get("window");
 
 const Locations = ({ navigation }) => {
   const [locations, setLocations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [sound, setSound] = React.useState();
+
+  async function playSound() {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../assets/sounds/power-up.wav")
+    );
+    setSound(sound);
+    await sound.playAsync();
+  }
+
+  React.useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
+  const duration = 1000;
 
   const parkImage = [
     {
@@ -80,17 +100,18 @@ const Locations = ({ navigation }) => {
 					></Image> */}
 
             {locations.map((location) => {
-              const amenities = JSON.parse(location.amenities);
               const park_id = location.park_id;
+              const amenities = JSON.parse(location.amenities);
+              vibeGo = () => Vibration.vibrate(duration);
+              touchGo = () => {
+                this.vibeGo();
+                playSound();
+                setTimeout(() => {
+                  navigation.push("HuntList", { park_id: park_id });
+                }, 1000);
+              };
               return (
-                <TouchableOpacity
-                  key={park_id}
-                  onPress={() =>
-                    setTimeout(() => {
-                      navigation.push("HuntList", { park_id: park_id });
-                    }, 1000)
-                  }
-                >
+                <TouchableOpacity key={park_id} onPress={() => this.touchGo()}>
                   <View
                     style={[
                       cardStyles.container,
