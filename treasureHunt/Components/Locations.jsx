@@ -39,61 +39,61 @@ const Locations = ({ navigation }) => {
 
   const duration = 1000;
 
-  const parkImage = [
-    {
-      park_id: 1,
-      image: require("../assets/park-images/1.jpeg"),
-    },
-    {
-      park_id: 2,
-      image: require("../assets/park-images/2.jpeg"),
-    },
-    {
-      park_id: 3,
-      image: require("../assets/park-images/3.jpeg"),
-    },
-    {
-      park_id: 4,
-      image: require("../assets/park-images/4.jpeg"),
-    },
-    {
-      park_id: 5,
-      image: require("../assets/park-images/5.jpeg"),
-    },
-  ];
+	const parkImage = [
+		{
+			park_id: 1,
+			image: require('../assets/park-images/1.jpeg'),
+		},
+		{
+			park_id: 2,
+			image: require('../assets/park-images/2.jpeg'),
+		},
+		{
+			park_id: 3,
+			image: require('../assets/park-images/3.jpeg'),
+		},
+		{
+			park_id: 4,
+			image: require('../assets/park-images/4.jpeg'),
+		},
+		{
+			park_id: 5,
+			image: require('../assets/park-images/5.jpeg'),
+		},
+	];
 
-  useEffect(() => {
-    getParks()
-      .then(({ parks }) => {
-        setLocations(parks);
-        setIsLoading(false);
-        setError(null);
-      })
-      .catch((err) => {
-        console.log(err.response.data);
-        setError({ err });
-        setIsLoading(false);
-      });
-  }, []);
+	useEffect(() => {
+		getParks()
+			.then(({ parks }) => {
+				setLocations(parks);
+				setIsLoading(false);
+				setError(null);
+			})
+			.catch((err) => {
+				console.log(err.response.data);
+				setError({ err });
+				setIsLoading(false);
+			});
+	}, []);
 
-  if (isLoading) {
-    return <Text>Parks Loading...</Text>;
-  }
+	if (isLoading) {
+		return <Text>Parks Loading...</Text>;
+	}
 
-  if (error) {
-    return <Text>Parks not found</Text>;
-  }
-  return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={require("../assets/view-images/background.png")}
-        resizeMode="contain"
-        style={styles.image}
-        imageStyle={styles.image_imageStyle}
-      >
-        <ScrollView>
-          <View>
-            {/* <Image
+	if (error) {
+		return <Text>Parks not found</Text>;
+	}
+	return (
+		<View style={styles.container}>
+			<ImageBackground
+				source={require('../assets/view-images/background.png')}
+				resizeMode='contain'
+				style={styles.image}
+				imageStyle={styles.image_imageStyle}
+			>
+				<View>
+					<ScrollView style={styles.cardList}>
+						{/* <Image
 						source={require('../assets/view-images/park-life-logo.png')}
 						resizeMode='contain'
 						style={styles.image2}
@@ -144,49 +144,55 @@ const Locations = ({ navigation }) => {
                 </TouchableOpacity>
               );
             })}
-          </View>
         </ScrollView>
+          </View>
       </ImageBackground>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    top: 0,
-  },
-  image_imageStyle: {},
-  // image2: {
-  // 	flexDirection: 'column',
-  // 	height: '40%',
-  // 	left: -60,
-  // 	justifyContent: 'center',
-  // 	alignItems: 'center',
-  // },
-  materialCardWithImageAndTitle: {
-    // height: 166,
-    width: 359,
-    // top: 152,
-    left: 30,
-  },
-  image2Stack: {
-    width: 359,
-    height: 318,
-    marginTop: 57,
-    marginLeft: 79,
-  },
-  loremIpsum4: {
-    fontFamily: "roboto-regular",
-    color: "#121212",
-    marginTop: 228,
-    marginLeft: 246,
-  },
+	container: {
+		flex: 1,
+		// justifyContent: 'center',
+		// alignItems: 'center',
+	},
+	image: {
+		width: '100%',
+		height: '100%',
+		position: 'absolute',
+		top: 0,
+	},
+	image_imageStyle: {},
+	// image2: {
+	// 	flexDirection: 'column',
+	// 	height: '40%',
+	// 	left: -60,
+	// 	justifyContent: 'center',
+	// 	alignItems: 'center',
+	// },
+	cardList: {
+		margin: 10,
+		// flexDirection: 'column',
+	},
+	materialCardWithImageAndTitle: {
+		marginBottom: 10,
+		width: width - 20,
+
+		// left: 30,
+	},
+	image2Stack: {
+		width: 359,
+		height: 318,
+		marginTop: 57,
+		marginLeft: 79,
+	},
+	loremIpsum4: {
+		fontFamily: 'roboto-regular',
+		color: '#121212',
+		marginTop: 228,
+		marginLeft: 246,
+	},
 });
 
 const cardStyles = StyleSheet.create({
