@@ -224,6 +224,7 @@ const CurrentWaypoint = ({ navigation }) => {
 						display: 'flex',
 						justifyContent: 'center',
 						alignItems: 'center',
+						backgroundColor: backgroundColor,
 					},
 				]}
 			>
@@ -232,15 +233,17 @@ const CurrentWaypoint = ({ navigation }) => {
 					resizeMode='cover'
 					style={{
 						flex: 1,
-						height: '80%',
-						width: screenWidth - 40,
+						margin: 20,
+						height: screenHeight,
+						width: screenWidth - 50,
 						justifyContent: 'center',
 						alignItems: 'center',
 					}}
 				/>
-				<TouchableOpacity style={[globalStyles.baseBtn]}>
+				<Text style={{}}>See the clue</Text>
+				{/* <TouchableOpacity style={[globalStyles.baseBtn]}>
 					<Text style={globalStyles.btnText}>Find the next treasure</Text>
-				</TouchableOpacity>
+				</TouchableOpacity> */}
 			</View>
 			<View
 				// pointerEvents='none'
