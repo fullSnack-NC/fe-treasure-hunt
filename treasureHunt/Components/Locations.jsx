@@ -204,6 +204,7 @@ const cardStyles = StyleSheet.create({
     flexWrap: "nowrap",
     backgroundColor: "rgba(124,168,91,1)",
     shadowColor: "#000",
+    top: 10,
     shadowOffset: {
       width: -2,
       height: 2,
