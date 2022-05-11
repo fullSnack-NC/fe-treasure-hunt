@@ -22,9 +22,21 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	},
-	imageStack: {
-		width: width,
+	imgContainer: {
+		flex: 1,
+		flexDirection: 'column',
 		height: height,
+		width: width,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	imgInContainer: {
+		position: 'relative',
+		borderWidth: 2,
+		borderColor: 'white',
+		borderRadius: 25,
+		alignItems: 'center',
+		// flexDirection: 'column',
 	},
 	image: {
 		width: '100%',
@@ -244,46 +256,23 @@ const CurrentWaypoint = ({ navigation }) => {
 					},
 				]}
 			>
-				<View style={styles.imageStack}>
+				<View style={[styles.imgContainer, { backgroundColor: backgroundColor }]}>
 					<ImageBackground
 						source={require('../assets/fullSnack-background-clear.png')}
 						resizeMode='contain'
 						style={styles.image}
 					></ImageBackground>
 					<Image
+						style={[styles.imgInContainer, { height: screenHeight - 100, width: screenWidth - 50 }]}
 						source={waypointPositions[CurrentWaypoint_id].imgPath}
 						resizeMode='cover'
-						style={{
-							flex: 1,
-							margin: 20,
-							height: screenHeight,
-							width: screenWidth - 50,
-							justifyContent: 'center',
-							alignItems: 'center',
-							borderRadius: 10,
-							borderColor: '#867957',
-							borderWidth: 2,
-						}}
 					/>
-					<Text style={{}}>Swipe right for the map</Text>
-					{/* <TouchableOpacity style={[globalStyles.baseBtn]}>
-					<Text style={globalStyles.btnText}>Find the next treasure</Text>
-				</TouchableOpacity> */}
+					<Text style={{ position: 'absolute', bottom: 15, fontSize: 20, fontWeight: '600', color: '#3781D7' }}>
+						Swipe right for the map &gt;&gt;&gt;
+					</Text>
 				</View>
 			</View>
-			<View
-				// pointerEvents='none'
-				style={{
-					paddingVerticle: 50,
-					flex: 1,
-					flexDirection: 'column',
-					height: screenHeight,
-					width: screenWidth,
-					justifyContent: 'center',
-					alignItems: 'center',
-					backgroundColor: backgroundColor,
-				}}
-			>
+			<View style={[styles.imgContainer, { backgroundColor: backgroundColor }]}>
 				<ImageBackground
 					source={require('../assets/fullSnack-background-clear.png')}
 					resizeMode='contain'
@@ -291,17 +280,7 @@ const CurrentWaypoint = ({ navigation }) => {
 				></ImageBackground>
 				{location && (
 					<MapView
-						style={{
-							position: 'relative',
-							height: screenHeight - 100,
-							width: screenWidth - 50,
-							borderWidth: 2,
-							borderColor: 'white',
-							borderRadius: 25,
-							// justifyContent: 'center',
-							alignItems: 'center',
-							flexDirection: 'column',
-						}}
+						style={[styles.imgInContainer, { height: screenHeight - 100, width: screenWidth - 50 }]}
 						provider={PROVIDER_GOOGLE}
 						apiKey={apiKey}
 						region={region}
@@ -332,15 +311,14 @@ const CurrentWaypoint = ({ navigation }) => {
 					<TouchableOpacity
 						style={[
 							globalStyles.baseBtn,
-							// {
-							// 	flex: 1,
-							// 	position: 'absolute',
-							// 	left: '-40%',
-							// 	bottom: 0,
-							// 	width: '80%',
-							// 	height: 50,
-							// 	zIndex: 10,
-							// },
+							{
+								position: 'absolute',
+								left: '-40%',
+								bottom: 0,
+								width: '80%',
+								height: 50,
+								zIndex: 10,
+							},
 						]}
 						onPress={() => handlePress()}
 					>
