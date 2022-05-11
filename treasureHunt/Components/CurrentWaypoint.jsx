@@ -6,17 +6,19 @@ import {
   ImageBackground,
   Dimensions,
   StyleSheet,
-} from 'react-native';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import * as Location from 'expo-location';
-import { useState, useEffect } from 'react';
-import { REACT_APP_MAPS_API_KEY } from '@env';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import globalStyles from '../css/style';
-import { getWaypointByMapID } from '../utils/api';
-const geolib = require('geolib');
+  Vibrations,
+} from "react-native";
+import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import * as Location from "expo-location";
+import React, { useState, useEffect } from "react";
+import { REACT_APP_MAPS_API_KEY } from "@env";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import globalStyles from "../css/style";
+import { getWaypointByMapID } from "../utils/api";
+import { Audio } from "expo-av";
+const geolib = require("geolib");
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -29,22 +31,22 @@ const styles = StyleSheet.create({
     height: height,
   },
   image: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
+    width: "100%",
+    height: "100%",
+    position: "absolute",
     top: 0,
   },
   button: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     bottom: 50,
     zIndex: 999,
   },
   acornContainer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 10,
     right: 10,
-    flexDirection: 'column-reverse',
+    flexDirection: "column-reverse",
   },
   acorn: {
     height: 40,
@@ -54,15 +56,39 @@ const styles = StyleSheet.create({
   },
   smallTxt: {
     fontSize: 20,
-    fontWeight: '400',
+    fontWeight: "400",
     paddingLeft: 10,
     lineHeight: 20,
-    color: '#fff',
+    color: "#fff",
   },
 });
 
 const CurrentWaypoint = ({ navigation }) => {
   const [CurrentWaypoint_id, setCurrentWaypoint_id] = useState(0);
+  const [sound, setSound] = React.useState();
+  async function playSound() {
+    const { sound } = await Audio.Sound.createAsync(
+      require("../assets/sounds/power-up.wav")
+    );
+    setSound(sound);
+    await sound.playAsync();
+  }
+
+  React.useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
+  const durationA = 900;
+  const durationB = 700;
+  const durationC = 500;
+  const durationD = 300;
+  const durationE = 200;
+  const durationF = 100;
+
   const waypointPositions = [
     {
       wayPoint_id: 1,
@@ -70,7 +96,7 @@ const CurrentWaypoint = ({ navigation }) => {
       longitude: -1.503277,
       latitudeDelta: 0.01,
       longitudeDelta: 0.01,
-      imgPath: require('../assets/waypoint-images/1_1.png'),
+      imgPath: require("../assets/waypoint-images/1_1.png"),
     },
     {
       wayPoint_id: 2,
@@ -78,7 +104,7 @@ const CurrentWaypoint = ({ navigation }) => {
       longitude: -1.499438,
       latitudeDelta: 0.01,
       longitudeDelta: 0.01,
-      imgPath: require('../assets/waypoint-images/1_2.png'),
+      imgPath: require("../assets/waypoint-images/1_2.png"),
     },
     {
       wayPoint_id: 3,
@@ -86,7 +112,7 @@ const CurrentWaypoint = ({ navigation }) => {
       longitude: -1.497038,
       latitudeDelta: 0.01,
       longitudeDelta: 0.01,
-      imgPath: require('../assets/waypoint-images/1_3.png'),
+      imgPath: require("../assets/waypoint-images/1_3.png"),
     },
     {
       wayPoint_id: 4,
@@ -94,7 +120,7 @@ const CurrentWaypoint = ({ navigation }) => {
       longitude: -1.495215,
       latitudeDelta: 0.01,
       longitudeDelta: 0.01,
-      imgPath: require('../assets/waypoint-images/1_4.png'),
+      imgPath: require("../assets/waypoint-images/1_4.png"),
     },
     {
       wayPoint_id: 5,
@@ -102,7 +128,7 @@ const CurrentWaypoint = ({ navigation }) => {
       longitude: -1.497238,
       latitudeDelta: 0.01,
       longitudeDelta: 0.01,
-      image: require('../assets/waypoint-images/1_5.png'),
+      image: require("../assets/waypoint-images/1_5.png"),
     },
   ];
   const [isLoading, setIsLoading] = useState(true);
@@ -123,8 +149,8 @@ const CurrentWaypoint = ({ navigation }) => {
   const [acornImgs, setAcornImgs] = useState([]);
   const [errorMsg, setErrorMsg] = useState(null);
   const apiKey = REACT_APP_MAPS_API_KEY;
-  const screenWidth = Dimensions.get('window').width;
-  const screenHeight = Dimensions.get('window').height;
+  const screenWidth = Dimensions.get("window").width;
+  const screenHeight = Dimensions.get("window").height;
   const distance = geolib.getDistance(
     {
       latitude: location.latitude,
@@ -135,14 +161,14 @@ const CurrentWaypoint = ({ navigation }) => {
       longitude: currentWaypointMarker.longitude,
     }
   );
-  const [backgroundColor, setBackgroundColor] = useState('#B3EAF2');
-  const [distanceMsg, setDistanceMsg] = useState('');
+  const [backgroundColor, setBackgroundColor] = useState("#B3EAF2");
+  const [distanceMsg, setDistanceMsg] = useState("");
 
   useEffect(() => {
     async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
         return;
       }
     };
@@ -162,32 +188,47 @@ const CurrentWaypoint = ({ navigation }) => {
 
     if (300 < distance && distance <= 500) {
       //setBackgroundColor('#2B4279');
-      setBackgroundColor('#0662CE');
-      setDistanceMsg('You’re freezing cold…brrrrrr');
+      setBackgroundColor("#0662CE");
+      setDistanceMsg("You’re freezing cold…brrrrrr");
+      playSound(durationF);
+      playSound(durationF);
     } else if (200 < distance && distance <= 300) {
       //setBackgroundColor('#65428C');
-      setBackgroundColor('#3781D7');
-      setDistanceMsg('You’re cold');
+      setBackgroundColor("#3781D7");
+      setDistanceMsg("You’re cold");
+      playSound(durationE);
+      playSound(durationE);
     } else if (150 < distance && distance <= 200) {
       //setBackgroundColor('#A1378B');
-      setBackgroundColor('#B3EAF2');
+      setBackgroundColor("#B3EAF2");
       setDistanceMsg("You're warm");
+      playSound(durationD);
+      playSound(durationD);
     } else if (80 < distance && distance <= 150) {
       //setBackgroundColor('#D42374');
-      setBackgroundColor('#FFC899');
-      setDistanceMsg('It’s toasty warm');
+      setBackgroundColor("#FFC899");
+      setDistanceMsg("It’s toasty warm");
+      playSound(durationC);
+      playSound(durationC);
     } else if (40 < distance && distance <= 80) {
       //setBackgroundColor('#F62B4C');
-      setBackgroundColor('#FFAD66');
-      setDistanceMsg('You’re quite hot… be careful you don’t burn');
+      setBackgroundColor("#FFAD66");
+      setDistanceMsg("You’re quite hot… be careful you don’t burn");
+      playSound(durationB);
+      playSound(durationB);
     } else if (0 <= distance && distance < 40) {
       //setBackgroundColor('#FF5800');
-      setBackgroundColor('#FF9232');
-      setDistanceMsg('You’re red hot!');
+      setBackgroundColor("#FF9232");
+      setDistanceMsg("You’re red hot!");
+      playSound(durationA);
+      playSound(durationA);
     } else if (0 === distance) {
       // setBackgroundColor('#FF5800');
-      setBackgroundColor('#FF7700');
-      setDistanceMsg('Scorching! You have arrived!');
+      setBackgroundColor("#FF7700");
+      setDistanceMsg("Scorching! You have arrived!");
+      playSound(durationA);
+      playSound(durationA);
+      playSound(durationA);
     }
 
     const timer = setTimeout(() => {
@@ -216,7 +257,7 @@ const CurrentWaypoint = ({ navigation }) => {
       <Image
         key={CurrentWaypoint_id}
         style={styles.acorn}
-        source={require('../assets/acorn.png')}
+        source={require("../assets/acorn.png")}
       />
     );
     setAcorns((currAcorns) => currAcorns + 1);
@@ -230,14 +271,14 @@ const CurrentWaypoint = ({ navigation }) => {
     incrementAcorn();
     if (newID >= waypointPositions.length) {
       setTimeout(() => {
-        navigation.navigate('Certificate');
+        navigation.navigate("Certificate");
       }, 2000);
       return;
     }
     setCurrentWaypoint_id(newID);
     setcurrentWaypointMarker(waypointPositions[newID]);
   };
-  let text = 'Waiting..';
+  let text = "Waiting..";
 
   if (errorMsg) {
     text = errorMsg;
@@ -254,31 +295,31 @@ const CurrentWaypoint = ({ navigation }) => {
             flex: 1,
             width: screenWidth,
             height: screenHeight,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             backgroundColor: backgroundColor,
           },
         ]}
       >
         <View style={styles.imageStack}>
           <ImageBackground
-            source={require('../assets/fullSnack-background-clear.png')}
-            resizeMode='contain'
+            source={require("../assets/fullSnack-background-clear.png")}
+            resizeMode="contain"
             style={styles.image}
           ></ImageBackground>
           <Image
             source={waypointPositions[CurrentWaypoint_id].imgPath}
-            resizeMode='cover'
+            resizeMode="cover"
             style={{
               flex: 1,
               margin: 20,
               height: screenHeight,
               width: screenWidth - 50,
-              justifyContent: 'center',
-              alignItems: 'center',
+              justifyContent: "center",
+              alignItems: "center",
               borderRadius: 10,
-              borderColor: '#867957',
+              borderColor: "#867957",
               borderWidth: 2,
             }}
           />
@@ -294,31 +335,31 @@ const CurrentWaypoint = ({ navigation }) => {
         style={{
           paddingVerticle: 50,
           flex: 1,
-          flexDirection: 'column',
+          flexDirection: "column",
           height: screenHeight,
           width: screenWidth,
-          justifyContent: 'center',
-          alignItems: 'center',
+          justifyContent: "center",
+          alignItems: "center",
           backgroundColor: backgroundColor,
         }}
       >
         <ImageBackground
-          source={require('../assets/fullSnack-background-clear.png')}
-          resizeMode='contain'
+          source={require("../assets/fullSnack-background-clear.png")}
+          resizeMode="contain"
           style={styles.image}
         ></ImageBackground>
         {location && (
           <MapView
             style={{
-              position: 'relative',
+              position: "relative",
               height: screenHeight - 100,
               width: screenWidth - 50,
               borderWidth: 2,
-              borderColor: 'white',
+              borderColor: "white",
               borderRadius: 25,
               // justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'column',
+              alignItems: "center",
+              flexDirection: "column",
             }}
             provider={PROVIDER_GOOGLE}
             apiKey={apiKey}
@@ -326,17 +367,17 @@ const CurrentWaypoint = ({ navigation }) => {
             showsUserLocation={true}
             scrollEnabled={true}
             rotateEnabled={true}
-            mapType='satellite'
+            mapType="satellite"
           >
             <Marker coordinate={currentWaypointMarker} />
             <Text
               style={{
                 // marginTop: 20,
-                color: '#fff',
+                color: "#fff",
                 fontSize: 60,
-                fontWeight: '600',
+                fontWeight: "600",
                 paddingLeft: 10,
-                textAlign: 'left',
+                textAlign: "left",
               }}
             >
               {distance}
