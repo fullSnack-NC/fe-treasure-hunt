@@ -9,10 +9,35 @@ import { getWaypointByMapID } from '../utils/api';
 const geolib = require('geolib');
 
 const styles = StyleSheet.create({
-	acornContainer: {
-		flexDirection: 'column',
+	container: {
+		width: '100%',
+		height: '100%',
 	},
-	acorn: { height: 40, width: 40 },
+	button: {
+		position: 'absolute',
+		left: 0,
+		bottom: 50,
+		zIndex: 999,
+	},
+	acornContainer: {
+		position: 'absolute',
+		bottom: 100,
+		right: 10,
+		flexDirection: 'column-reverse',
+	},
+	acorn: {
+		height: 40,
+		width: 40,
+		marginTop: 5,
+		borderRadius: 10,
+	},
+	smallTxt: {
+		fontSize: 20,
+		fontWeight: '400',
+		paddingLeft: 10,
+		lineHeight: 20,
+		color: '#fff',
+	},
 });
 
 const CurrentWaypoint = ({ navigation }) => {
@@ -166,15 +191,16 @@ const CurrentWaypoint = ({ navigation }) => {
 	};
 	const handlePress = () => {
 		let newID = CurrentWaypoint_id + 1;
+		if (newID >= 4) {
+			navigation.navigate('Certificate');
+			console.log(newID, 'newID');
+			return;
+		}
+		console.log(CurrentWaypoint_id, 'CurrentWaypoint_id');
 		setCurrentWaypoint_id(newID);
 		incrementAcorn();
-
-		if (newID === waypointPositions.length) {
-			return navigation.push('Certificate');
-		}
 		setcurrentWaypointMarker(waypointPositions[newID]);
 	};
-
 	let text = 'Waiting..';
 
 	if (errorMsg) {
@@ -185,19 +211,31 @@ const CurrentWaypoint = ({ navigation }) => {
 
 	return (
 		<ScrollView horizontal={true} pagingEnabled={true}>
-			<View>
+			<View
+				style={[
+					globalStyles.container,
+					{
+						flex: 1,
+						width: screenWidth,
+						height: screenHeight,
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+					},
+				]}
+			>
 				<Image
 					source={waypointPositions[CurrentWaypoint_id].imgPath}
-					resizeMode='contain'
+					resizeMode='cover'
 					style={{
 						flex: 1,
-						height: '90%',
-						width: screenWidth,
+						height: '80%',
+						width: screenWidth - 40,
 						justifyContent: 'center',
 						alignItems: 'center',
 					}}
 				/>
-				<TouchableOpacity style={globalStyles.baseBtn}>
+				<TouchableOpacity style={[globalStyles.baseBtn]}>
 					<Text style={globalStyles.btnText}>Find the next treasure</Text>
 				</TouchableOpacity>
 			</View>
@@ -206,6 +244,7 @@ const CurrentWaypoint = ({ navigation }) => {
 				style={{
 					paddingVerticle: 50,
 					flex: 1,
+					flexDirection: 'column',
 					height: screenHeight,
 					width: screenWidth,
 					justifyContent: 'center',
@@ -216,12 +255,18 @@ const CurrentWaypoint = ({ navigation }) => {
 				{location && (
 					<MapView
 						style={{
+							position: 'relative',
 							height: screenHeight - 100,
 							width: screenWidth - 50,
+							borderWidth: 2,
+							borderColor: 'white',
+							borderRadius: 25,
+							// justifyContent: 'center',
+							alignItems: 'center',
+							flexDirection: 'column',
 						}}
 						provider={PROVIDER_GOOGLE}
 						apiKey={apiKey}
-						// initialRegion={region}
 						region={region}
 						showsUserLocation={true}
 						scrollEnabled={true}
@@ -229,21 +274,46 @@ const CurrentWaypoint = ({ navigation }) => {
 						mapType='satellite'
 					>
 						<Marker coordinate={currentWaypointMarker} />
-						<Text style={{ color: 'white', fontSize: 40 }}>{distance}m away!</Text>
-						<Text>{distanceMsg}</Text>
+						<Text
+							style={{
+								// marginTop: 20,
+								color: '#fff',
+								fontSize: 60,
+								fontWeight: '600',
+								paddingLeft: 10,
+								textAlign: 'left',
+							}}
+						>
+							{distance}
+							<Text style={styles.smallTxt}>m</Text>
+						</Text>
+						<Text style={styles.smallTxt}>{distanceMsg}</Text>
+						<View style={styles.acornContainer}>{acornImgs}</View>
+						{distance < 40 && (
+							<TouchableOpacity
+								style={[
+									globalStyles.baseBtn,
+									// {
+									// 	flex: 1,
+									// 	position: 'absolute',
+									// 	left: '-40%',
+									// 	bottom: 0,
+									// 	width: '80%',
+									// 	height: 50,
+									// 	zIndex: 10,
+									// },
+								]}
+								onPress={() => handlePress()}
+							>
+								<Text style={globalStyles.btnText}>Found</Text>
+							</TouchableOpacity>
+						)}
 					</MapView>
 				)}
-				<View>{acornImgs}</View>
-				<View style={styles.acornContainer}></View>
-				<Text>{acorns}</Text>
+
 				<Text> Swipe for Clue!⬅️ &lt;&lt;</Text>
-				{distance < 40 && (
-					<TouchableOpacity style={globalStyles.baseBtn} onPress={() => handlePress()}>
-						<Text style={globalStyles.btnText}>Found</Text>
-					</TouchableOpacity>
-				)}
 			</View>
 		</ScrollView>
 	);
-};;;
+};
 export default CurrentWaypoint;
