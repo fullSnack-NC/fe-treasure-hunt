@@ -1,12 +1,35 @@
 import { getParks } from '../utils/api';
 import { useEffect, useState } from 'react';
 
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Image } from 'react-native';
 
 const Locations = ({ navigation }) => {
 	const [locations, setLocations] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
+
+	const parkImage = [
+		{
+			park_id: 1,
+			image: require('../assets/park-images/1.jpeg'),
+		},
+		{
+			park_id: 2,
+			image: require('../assets/park-images/2.jpeg'),
+		},
+		{
+			park_id: 3,
+			image: require('../assets/park-images/3.jpeg'),
+		},
+		{
+			park_id: 4,
+			image: require('../assets/park-images/4.jpeg'),
+		},
+		{
+			park_id: 5,
+			image: require('../assets/park-images/5.jpeg'),
+		},
+	];
 
 	useEffect(() => {
 		getParks()
@@ -37,6 +60,10 @@ const Locations = ({ navigation }) => {
 				return (
 					<View key={park_id}>
 						<Text>{location.park_name}</Text>
+						<Image
+							source={parkImage[park_id - 1].image}
+							style={{ height: 50, width: 150 }}
+						/>
 						{amenities.accessible ? <Text>Accessible 🦽</Text> : null}
 						{amenities.lake ? <Text>Lake! 💧</Text> : null}
 						{amenities.wildlife ? <Text>Wildlife! 🦔</Text> : null}

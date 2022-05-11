@@ -15,12 +15,28 @@ const Stack = createStackNavigator();
 export default function App() {
 	return (
 		<NavigationContainer>
-			<Stack.Navigator screenOptions={{ headerShown: false }}>
+			<Stack.Navigator screenOptions={{ headerShown: true }}>
 				<Stack.Screen name='Welcome' component={Welcome} />
-				<Stack.Screen name='Locations' component={Locations} navigation={navigation} />
-				<Stack.Screen name='HuntList' component={HuntList} navigation={navigation} />
-				<Stack.Screen name='GameLaunchHandover' component={GameLaunchHandover} navigation={navigation} />
-				<Stack.Screen name='CurrentWaypoint' component={CurrentWaypoint} navigation={navigation} />
+				<Stack.Screen
+					name='Locations'
+					component={Locations}
+					navigation={navigation}
+				/>
+				<Stack.Screen
+					name='HuntList'
+					component={HuntList}
+					navigation={navigation}
+				/>
+				<Stack.Screen
+					name='GameLaunchHandover'
+					component={GameLaunchHandover}
+					navigation={navigation}
+				/>
+				<Stack.Screen
+					name='CurrentWaypoint'
+					component={CurrentWaypoint}
+					navigation={navigation}
+				/>
 				<Stack.Screen name='Certificate' component={Certificate} />
 			</Stack.Navigator>
 		</NavigationContainer>
