@@ -1,6 +1,16 @@
-import { getParks } from "../utils/api";
+import { getParks } from '../utils/api';
 import React, { useEffect, useState, Component } from 'react';
-import { View, Text, Image, StyleSheet, ImageBackground, Dimensions, ScrollView, TouchableOpacity, Vibration } from 'react-native';
+import {
+	View,
+	Text,
+	Image,
+	StyleSheet,
+	ImageBackground,
+	Dimensions,
+	ScrollView,
+	TouchableOpacity,
+	Vibration,
+} from 'react-native';
 import { Audio } from 'expo-av';
 const { width, height } = Dimensions.get('window');
 
@@ -10,7 +20,9 @@ const Locations = ({ navigation }) => {
 	const [error, setError] = useState(null);
 	const [sound, setSound] = React.useState();
 	async function playSound() {
-		const { sound } = await Audio.Sound.createAsync(require('../assets/sounds/power-up.wav'));
+		const { sound } = await Audio.Sound.createAsync(
+			require('../assets/sounds/power-up.wav')
+		);
 		setSound(sound);
 		await sound.playAsync();
 	}
@@ -98,7 +110,10 @@ const Locations = ({ navigation }) => {
 							const amenities = JSON.parse(location.amenities);
 
 							return (
-								<TouchableOpacity key={park_id} onPress={() => touchGo(park_id)}>
+								<TouchableOpacity
+									key={park_id}
+									onPress={() => touchGo(park_id)}
+								>
 									{/* <TouchableOpacity
 									key={park_id}
                   onPress={() =>
@@ -109,10 +124,17 @@ const Locations = ({ navigation }) => {
 										}, 1000)}
 									}
 								> */}
-									<View style={[cardStyles.container, styles.materialCardWithImageAndTitle]}>
+									<View
+										style={[
+											cardStyles.container,
+											styles.materialCardWithImageAndTitle,
+										]}
+									>
 										<View style={cardStyles.cardBody}>
 											<View style={cardStyles.bodyContent}>
-												<Text style={cardStyles.titleStyle}>{location.park_name}</Text>
+												<Text style={cardStyles.titleStyle}>
+													{location.park_name}
+												</Text>
 												<Text style={cardStyles.subtitleStyle}>
 													{amenities.accessible ? <Text>🦽</Text> : null}
 													{amenities.lake ? <Text>💧</Text> : null}
@@ -121,7 +143,10 @@ const Locations = ({ navigation }) => {
 													{amenities.food ? <Text> 🍦</Text> : null}
 												</Text>
 											</View>
-											<Image style={cardStyles.cardItemImagePlace} source={parkImage[park_id - 1].image}></Image>
+											<Image
+												style={cardStyles.cardItemImagePlace}
+												source={parkImage[park_id - 1].image}
+											></Image>
 										</View>
 									</View>
 								</TouchableOpacity>
@@ -211,16 +236,17 @@ const cardStyles = StyleSheet.create({
 		flex: 1,
 	},
 	titleStyle: {
-		fontSize: 24,
+		fontSize: 15,
 		fontWeight: '600',
 		color: '#fff',
 		paddingBottom: 12,
 	},
 	subtitleStyle: {
-		fontSize: 20,
+		fontSize: 25,
 		color: '#000',
 		lineHeight: 16,
 		opacity: 1,
+		paddingTop: 12,
 	},
 	cardItemImagePlace: {
 		backgroundColor: '#ccc',
