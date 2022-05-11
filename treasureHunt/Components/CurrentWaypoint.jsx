@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 	},
 	acornContainer: {
 		position: 'absolute',
-		bottom: 100,
+		bottom: 10,
 		right: 10,
 		flexDirection: 'column-reverse',
 	},
@@ -191,14 +191,15 @@ const CurrentWaypoint = ({ navigation }) => {
 	};
 	const handlePress = () => {
 		let newID = CurrentWaypoint_id + 1;
-		if (newID >= 4) {
-			navigation.navigate('Certificate');
-			console.log(newID, 'newID');
+		incrementAcorn();
+		if (newID >= waypointPositions.length) {
+			setTimeout(() => {
+				navigation.navigate('Certificate');
+			}, 2000);
 			return;
 		}
 		console.log(CurrentWaypoint_id, 'CurrentWaypoint_id');
 		setCurrentWaypoint_id(newID);
-		incrementAcorn();
 		setcurrentWaypointMarker(waypointPositions[newID]);
 	};
 	let text = 'Waiting..';
@@ -289,28 +290,27 @@ const CurrentWaypoint = ({ navigation }) => {
 						</Text>
 						<Text style={styles.smallTxt}>{distanceMsg}</Text>
 						<View style={styles.acornContainer}>{acornImgs}</View>
-						{distance < 40 && (
-							<TouchableOpacity
-								style={[
-									globalStyles.baseBtn,
-									// {
-									// 	flex: 1,
-									// 	position: 'absolute',
-									// 	left: '-40%',
-									// 	bottom: 0,
-									// 	width: '80%',
-									// 	height: 50,
-									// 	zIndex: 10,
-									// },
-								]}
-								onPress={() => handlePress()}
-							>
-								<Text style={globalStyles.btnText}>Found</Text>
-							</TouchableOpacity>
-						)}
 					</MapView>
 				)}
-
+				{distance < 40 && (
+					<TouchableOpacity
+						style={[
+							globalStyles.baseBtn,
+							// {
+							// 	flex: 1,
+							// 	position: 'absolute',
+							// 	left: '-40%',
+							// 	bottom: 0,
+							// 	width: '80%',
+							// 	height: 50,
+							// 	zIndex: 10,
+							// },
+						]}
+						onPress={() => handlePress()}
+					>
+						<Text style={globalStyles.btnText}>Found</Text>
+					</TouchableOpacity>
+				)}
 				<Text> Swipe for Clue!⬅️ &lt;&lt;</Text>
 			</View>
 		</ScrollView>
