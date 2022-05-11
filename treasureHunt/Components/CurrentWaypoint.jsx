@@ -1,10 +1,10 @@
 import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  Dimensions,
-  Button,
+	View,
+	Text,
+	Image,
+	ScrollView,
+	Dimensions,
+	Button,
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -17,13 +17,14 @@ const geolib = require('geolib');
 
 const CurrentWaypoint = ({ navigation }) => {
 	const [CurrentWaypoint_id, setCurrentWaypoint_id] = useState(0);
-  const waypointPositions = [
+	const waypointPositions = [
 		{
 			wayPoint_id: 1,
 			latitude: 53.838172,
 			longitude: -1.503277,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
+			image: require('../assets/waypoint-images/1_1.png'),
 		},
 		{
 			wayPoint_id: 2,
@@ -31,6 +32,7 @@ const CurrentWaypoint = ({ navigation }) => {
 			longitude: -1.499438,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
+			image: require('../assets/waypoint-images/1_2.png'),
 		},
 		{
 			wayPoint_id: 3,
@@ -38,6 +40,7 @@ const CurrentWaypoint = ({ navigation }) => {
 			longitude: -1.497038,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
+			image: require('../assets/waypoint-images/1_3.png'),
 		},
 		{
 			wayPoint_id: 4,
@@ -45,6 +48,7 @@ const CurrentWaypoint = ({ navigation }) => {
 			longitude: -1.495215,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
+			image: require('../assets/waypoint-images/1_4.png'),
 		},
 		{
 			wayPoint_id: 5,
@@ -52,11 +56,14 @@ const CurrentWaypoint = ({ navigation }) => {
 			longitude: -1.497238,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
+			image: require('../assets/waypoint-images/1_5.png'),
 		},
 	];
 
 	const [isLoading, setIsLoading] = useState(true);
-	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(waypointPositions[0]);
+	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(
+		waypointPositions[0]
+	);
 	const [location, setLocation] = useState({
 		latitude: 0,
 		longitude: 0,
@@ -209,7 +216,7 @@ const CurrentWaypoint = ({ navigation }) => {
 		<ScrollView horizontal={true} pagingEnabled={true}>
 			<View>
 				<Image
-					source={require(`../assets/waypoint-images/1_1.png`)}
+					source={currentWaypointMarker.image}
 					resizeMode='contain'
 					style={{
 						flex: 1,
@@ -238,7 +245,7 @@ const CurrentWaypoint = ({ navigation }) => {
 				{location && (
 					<MapView
 						style={{
-							height: screenHeight - 100,
+							height: screenHeight - 150,
 							width: screenWidth - 50,
 						}}
 						provider={PROVIDER_GOOGLE}
@@ -251,7 +258,9 @@ const CurrentWaypoint = ({ navigation }) => {
 						mapType='satellite'
 					>
 						<Marker coordinate={currentWaypointMarker} />
-						<Text style={{ color: 'white', fontSize: 40 }}>{distance}m away!</Text>
+						<Text style={{ color: 'white', fontSize: 40 }}>
+							{distance}m away!
+						</Text>
 						<Text>{distanceMsg}</Text>
 					</MapView>
 				)}
@@ -261,7 +270,10 @@ const CurrentWaypoint = ({ navigation }) => {
 
 				<Text> Swipe for Clue!⬅️ &lt;&lt;</Text>
 				{distance < 40 && (
-					<TouchableOpacity style={globalStyles.baseBtn} onPress={() => handlePress()}>
+					<TouchableOpacity
+						style={globalStyles.baseBtn}
+						onPress={() => handlePress()}
+					>
 						<Text style={globalStyles.btnText}>Found</Text>
 					</TouchableOpacity>
 				)}
