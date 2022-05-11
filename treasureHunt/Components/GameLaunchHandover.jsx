@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
     flex: 0.25,
     marginLeft: '15%',
     marginTop: '20%',
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 15,
+    paddingRight: 15,
     paddingTop: 12,
     paddingBottom: 12,
     justifyContent: 'space-around',
@@ -89,8 +89,8 @@ const GameLaunchHandover = ({ navigation, route }) => {
         <View style={styles.handoverTextContainer}>
           <Text style={styles.handoverText}>
             OK park ranger! Click the button below to see the first picture
-            clue. It's where the hunt starts. If you're in the right starting
-            place, swipe right on it to see the map to start.
+            clue. It's where the hunt starts. Then swipe right on it to see the
+            map to start.
           </Text>
         </View>
         <Button
