@@ -81,11 +81,13 @@ const CurrentWaypoint = ({ navigation }) => {
 			longitude: -1.497238,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
-			imgPath: require('../assets/waypoint-images/1_5.png'),
+			image: require('../assets/waypoint-images/1_5.png'),
 		},
 	];
 	const [isLoading, setIsLoading] = useState(true);
-	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(waypointPositions[0]);
+	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(
+		waypointPositions[0]
+	);
 	const [location, setLocation] = useState({
 		latitude: 0,
 		longitude: 0,
