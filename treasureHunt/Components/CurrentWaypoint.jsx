@@ -1,11 +1,4 @@
-import {
-	View,
-	Text,
-	Image,
-	ScrollView,
-	Dimensions,
-	Button,
-} from 'react-native';
+import { View, Text, Image, ScrollView, Dimensions, StyleSheet } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useState, useEffect } from 'react';
@@ -14,6 +7,38 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import globalStyles from '../css/style';
 import { getWaypointByMapID } from '../utils/api';
 const geolib = require('geolib');
+
+const styles = StyleSheet.create({
+	container: {
+		width: '100%',
+		height: '100%',
+	},
+	button: {
+		position: 'absolute',
+		left: 0,
+		bottom: 50,
+		zIndex: 999,
+	},
+	acornContainer: {
+		position: 'absolute',
+		bottom: 10,
+		right: 10,
+		flexDirection: 'column-reverse',
+	},
+	acorn: {
+		height: 40,
+		width: 40,
+		marginTop: 5,
+		borderRadius: 10,
+	},
+	smallTxt: {
+		fontSize: 20,
+		fontWeight: '400',
+		paddingLeft: 10,
+		lineHeight: 20,
+		color: '#fff',
+	},
+});
 
 const CurrentWaypoint = ({ navigation }) => {
 	const [CurrentWaypoint_id, setCurrentWaypoint_id] = useState(0);
@@ -24,7 +49,7 @@ const CurrentWaypoint = ({ navigation }) => {
 			longitude: -1.503277,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
-			image: require('../assets/waypoint-images/1_1.png'),
+			imgPath: require('../assets/waypoint-images/1_1.png'),
 		},
 		{
 			wayPoint_id: 2,
@@ -32,7 +57,7 @@ const CurrentWaypoint = ({ navigation }) => {
 			longitude: -1.499438,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
-			image: require('../assets/waypoint-images/1_2.png'),
+			imgPath: require('../assets/waypoint-images/1_2.png'),
 		},
 		{
 			wayPoint_id: 3,
@@ -40,7 +65,7 @@ const CurrentWaypoint = ({ navigation }) => {
 			longitude: -1.497038,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
-			image: require('../assets/waypoint-images/1_3.png'),
+			imgPath: require('../assets/waypoint-images/1_3.png'),
 		},
 		{
 			wayPoint_id: 4,
@@ -48,7 +73,7 @@ const CurrentWaypoint = ({ navigation }) => {
 			longitude: -1.495215,
 			latitudeDelta: 0.01,
 			longitudeDelta: 0.01,
-			image: require('../assets/waypoint-images/1_4.png'),
+			imgPath: require('../assets/waypoint-images/1_4.png'),
 		},
 		{
 			wayPoint_id: 5,
@@ -59,7 +84,6 @@ const CurrentWaypoint = ({ navigation }) => {
 			image: require('../assets/waypoint-images/1_5.png'),
 		},
 	];
-
 	const [isLoading, setIsLoading] = useState(true);
 	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(
 		waypointPositions[0]
@@ -75,6 +99,7 @@ const CurrentWaypoint = ({ navigation }) => {
 		longitudeDelta: 0.003421,
 	});
 	const [acorns, setAcorns] = useState(0);
+	const [acornImgs, setAcornImgs] = useState([]);
 	const [errorMsg, setErrorMsg] = useState(null);
 	const apiKey = REACT_APP_MAPS_API_KEY;
 	const screenWidth = Dimensions.get('window').width;
@@ -157,53 +182,28 @@ const CurrentWaypoint = ({ navigation }) => {
 	// 			setIsLoading(false);
 	// 		});
 	// }, []);
+
 	const incrementAcorn = () => {
+		const acorn = <Image key={CurrentWaypoint_id} style={styles.acorn} source={require('../assets/acorn.png')} />;
 		setAcorns((currAcorns) => currAcorns + 1);
+		setAcornImgs((currAcorns) => {
+			const existingAcorns = [...currAcorns];
+			return [existingAcorns, acorn];
+		});
 	};
-	const generateAcornsArr = () => {
-		let acornImgs = [];
-		for (let i = 0; i < acorns; i++) {
-			acornImgs.push('../assets/acorn.png');
-		}
-		return acornImgs;
-	};
-
-	// const acornMapedImg = () => {
-	// 	return acornImgs.map((img) => {
-	// 		return <Image source={require(img)} key={dest.Image} style={{ height: 20, width: 20 }} resizeMode='contain' />;
-	// 	});
-	// };
-	// console.log(acornMapedImg);
-	{
-		/* 
-        const list = () => {
-          return array.map((element) => {
-            return (
-              <View key={element.key} style={{margin: 10}}>
-                <Text>{element.title}</Text>
-                <Text>{element.subtitle}</Text>
-              </View>
-            );
-         });
-  }; */
-	}
-
-	{
-		/* return <View>{list()}</View>;
-		 */
-	}
-
 	const handlePress = () => {
 		let newID = CurrentWaypoint_id + 1;
-		setCurrentWaypoint_id(newID);
 		incrementAcorn();
-		generateAcornsArr();
-		if (newID === waypointPositions.length) {
-			return navigation.push('Certificate');
+		if (newID >= waypointPositions.length) {
+			setTimeout(() => {
+				navigation.navigate('Certificate');
+			}, 2000);
+			return;
 		}
+		console.log(CurrentWaypoint_id, 'CurrentWaypoint_id');
+		setCurrentWaypoint_id(newID);
 		setcurrentWaypointMarker(waypointPositions[newID]);
 	};
-
 	let text = 'Waiting..';
 
 	if (errorMsg) {
@@ -214,19 +214,31 @@ const CurrentWaypoint = ({ navigation }) => {
 
 	return (
 		<ScrollView horizontal={true} pagingEnabled={true}>
-			<View>
+			<View
+				style={[
+					globalStyles.container,
+					{
+						flex: 1,
+						width: screenWidth,
+						height: screenHeight,
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+					},
+				]}
+			>
 				<Image
-					source={currentWaypointMarker.image}
-					resizeMode='contain'
+					source={waypointPositions[CurrentWaypoint_id].imgPath}
+					resizeMode='cover'
 					style={{
 						flex: 1,
-						height: '90%',
-						width: screenWidth,
+						height: '80%',
+						width: screenWidth - 40,
 						justifyContent: 'center',
 						alignItems: 'center',
 					}}
 				/>
-				<TouchableOpacity style={globalStyles.baseBtn}>
+				<TouchableOpacity style={[globalStyles.baseBtn]}>
 					<Text style={globalStyles.btnText}>Find the next treasure</Text>
 				</TouchableOpacity>
 			</View>
@@ -235,6 +247,7 @@ const CurrentWaypoint = ({ navigation }) => {
 				style={{
 					paddingVerticle: 50,
 					flex: 1,
+					flexDirection: 'column',
 					height: screenHeight,
 					width: screenWidth,
 					justifyContent: 'center',
@@ -245,12 +258,18 @@ const CurrentWaypoint = ({ navigation }) => {
 				{location && (
 					<MapView
 						style={{
-							height: screenHeight - 150,
+							position: 'relative',
+							height: screenHeight - 100,
 							width: screenWidth - 50,
+							borderWidth: 2,
+							borderColor: 'white',
+							borderRadius: 25,
+							// justifyContent: 'center',
+							alignItems: 'center',
+							flexDirection: 'column',
 						}}
 						provider={PROVIDER_GOOGLE}
 						apiKey={apiKey}
-						// initialRegion={region}
 						region={region}
 						showsUserLocation={true}
 						scrollEnabled={true}
@@ -258,25 +277,43 @@ const CurrentWaypoint = ({ navigation }) => {
 						mapType='satellite'
 					>
 						<Marker coordinate={currentWaypointMarker} />
-						<Text style={{ color: 'white', fontSize: 40 }}>
-							{distance}m away!
+						<Text
+							style={{
+								// marginTop: 20,
+								color: '#fff',
+								fontSize: 60,
+								fontWeight: '600',
+								paddingLeft: 10,
+								textAlign: 'left',
+							}}
+						>
+							{distance}
+							<Text style={styles.smallTxt}>m</Text>
 						</Text>
-						<Text>{distanceMsg}</Text>
+						<Text style={styles.smallTxt}>{distanceMsg}</Text>
+						<View style={styles.acornContainer}>{acornImgs}</View>
 					</MapView>
 				)}
-
-				{/* <View>{acornMapedImg}</View> */}
-				<Text>{acorns}</Text>
-
-				<Text> Swipe for Clue!⬅️ &lt;&lt;</Text>
 				{distance < 40 && (
 					<TouchableOpacity
-						style={globalStyles.baseBtn}
+						style={[
+							globalStyles.baseBtn,
+							// {
+							// 	flex: 1,
+							// 	position: 'absolute',
+							// 	left: '-40%',
+							// 	bottom: 0,
+							// 	width: '80%',
+							// 	height: 50,
+							// 	zIndex: 10,
+							// },
+						]}
 						onPress={() => handlePress()}
 					>
 						<Text style={globalStyles.btnText}>Found</Text>
 					</TouchableOpacity>
 				)}
+				<Text> Swipe for Clue!⬅️ &lt;&lt;</Text>
 			</View>
 		</ScrollView>
 	);
