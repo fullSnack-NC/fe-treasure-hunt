@@ -1,26 +1,14 @@
 import { getParks } from "../utils/api";
-import React, { useEffect, useState, Component } from "react";
-
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  ImageBackground,
-  Dimensions,
-  ScrollView,
-  TouchableOpacity,
-  Vibration,
-} from "react-native";
-import { Audio } from "expo-av";
-const { width, height } = Dimensions.get("window");
+import React, { useEffect, useState, Component } from 'react';
+import { View, Text, Image, StyleSheet, ImageBackground, Dimensions, ScrollView, TouchableOpacity, Vibration } from 'react-native';
+import { Audio } from 'expo-av';
+const { width, height } = Dimensions.get('window');
 
 const Locations = ({ navigation }) => {
 	const [locations, setLocations] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [sound, setSound] = React.useState();
-
 	async function playSound() {
 		const { sound } = await Audio.Sound.createAsync(require('../assets/sounds/power-up.wav'));
 		setSound(sound);
@@ -59,6 +47,14 @@ const Locations = ({ navigation }) => {
 			image: require('../assets/park-images/5.jpeg'),
 		},
 	];
+	const vibeGo = () => Vibration.vibrate(duration);
+	const touchGo = (park_id) => {
+		vibeGo();
+		playSound();
+		setTimeout(() => {
+			navigation.push('HuntList', { park_id: park_id });
+		}, 1000);
+	};
 
 	useEffect(() => {
 		getParks()
@@ -84,7 +80,7 @@ const Locations = ({ navigation }) => {
 	return (
 		<View style={styles.container}>
 			<ImageBackground
-				source={require('../assets/view-images/background.png')}
+				source={require('../assets/view-images/background-noLamp.png')}
 				resizeMode='contain'
 				style={styles.image}
 				imageStyle={styles.image_imageStyle}
@@ -100,34 +96,29 @@ const Locations = ({ navigation }) => {
 						{locations.map((location) => {
 							const park_id = location.park_id;
 							const amenities = JSON.parse(location.amenities);
-							// vibeGo = () => Vibration.vibrate(duration);
-							// touchGo = () => {
-							//   this.vibeGo();
-							//   playSound();
-							//   setTimeout(() => {
-							//     navigation.push("HuntList", { park_id: park_id });
-							//   }, 1000);
-							// };
+
 							return (
-								// <TouchableOpacity key={park_id} onPress={() => this.touchGo()}>
-								<TouchableOpacity
+								<TouchableOpacity key={park_id} onPress={() => touchGo(park_id)}>
+									{/* <TouchableOpacity
 									key={park_id}
-									onPress={() =>
+                  onPress={() =>
+                  {
+                    // touchGo
 										setTimeout(() => {
 											navigation.push('HuntList', { park_id: park_id });
-										}, 1000)
+										}, 1000)}
 									}
-								>
+								> */}
 									<View style={[cardStyles.container, styles.materialCardWithImageAndTitle]}>
 										<View style={cardStyles.cardBody}>
 											<View style={cardStyles.bodyContent}>
 												<Text style={cardStyles.titleStyle}>{location.park_name}</Text>
 												<Text style={cardStyles.subtitleStyle}>
-													{amenities.accessible ? <Text>Accessible 🦽</Text> : null}
-													{amenities.lake ? <Text>Lake! 💧</Text> : null}
-													{amenities.wildlife ? <Text>Wildlife! 🦔</Text> : null}
-													{amenities.toilet ? <Text>Toilet! 🚻</Text> : null}
-													{amenities.food ? <Text>Food! 🍦</Text> : null}
+													{amenities.accessible ? <Text>🦽</Text> : null}
+													{amenities.lake ? <Text>💧</Text> : null}
+													{amenities.wildlife ? <Text> 🦔</Text> : null}
+													{amenities.toilet ? <Text> 🚻</Text> : null}
+													{amenities.food ? <Text> 🍦</Text> : null}
 												</Text>
 											</View>
 											<Image style={cardStyles.cardItemImagePlace} source={parkImage[park_id - 1].image}></Image>
@@ -165,6 +156,7 @@ const styles = StyleSheet.create({
 	// },
 	cardList: {
 		margin: 10,
+		marginTop: 20,
 
 		// flexDirection: 'column',
 	},
@@ -189,53 +181,54 @@ const styles = StyleSheet.create({
 });
 
 const cardStyles = StyleSheet.create({
-  container: {
-    borderWidth: 1,
-    borderRadius: 23,
-    borderColor: "#CCC",
-    flexWrap: "nowrap",
-    backgroundColor: "rgba(124,168,91,1)",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: -2,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 1.5,
-    elevation: 3,
-    overflow: "hidden",
-    opacity: 0.8,
-  },
-  cardBody: {
-    flexDirection: "row-reverse",
-    justifyContent: "space-between",
-    width: 357,
-    top: 1,
-    height: 150,
-  },
-  bodyContent: {
-    padding: 16,
-    paddingTop: 24,
-    flex: 1,
-  },
-  titleStyle: {
-    fontSize: 24,
-    color: "#000",
-    paddingBottom: 12,
-  },
-  subtitleStyle: {
-    fontSize: 14,
-    color: "#000",
-    lineHeight: 16,
-    opacity: 1,
-  },
-  cardItemImagePlace: {
-    backgroundColor: "#ccc",
-    height: 117,
-    width: 159,
-    margin: 16,
-    borderRadius: 19,
-  },
+	container: {
+		borderWidth: 1,
+		borderRadius: 23,
+		borderColor: '#CCC',
+		flexWrap: 'nowrap',
+		backgroundColor: 'rgba(124,168,91,1)',
+		shadowColor: '#000',
+		shadowOffset: {
+			width: -2,
+			height: 2,
+		},
+		shadowOpacity: 0.1,
+		shadowRadius: 1.5,
+		elevation: 3,
+		overflow: 'hidden',
+		opacity: 0.9,
+	},
+	cardBody: {
+		flexDirection: 'row-reverse',
+		justifyContent: 'space-between',
+		width: 357,
+		top: 1,
+		height: 150,
+	},
+	bodyContent: {
+		padding: 16,
+		paddingTop: 24,
+		flex: 1,
+	},
+	titleStyle: {
+		fontSize: 24,
+		fontWeight: '600',
+		color: '#fff',
+		paddingBottom: 12,
+	},
+	subtitleStyle: {
+		fontSize: 20,
+		color: '#000',
+		lineHeight: 16,
+		opacity: 1,
+	},
+	cardItemImagePlace: {
+		backgroundColor: '#ccc',
+		height: 117,
+		width: 159,
+		margin: 16,
+		borderRadius: 19,
+	},
 });
 
 export default Locations;
