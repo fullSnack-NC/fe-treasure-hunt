@@ -9,6 +9,7 @@ import {
 	StyleSheet,
 	ImageBackground,
 	Dimensions,
+	ScrollView,
 } from 'react-native';
 const { width, height } = Dimensions.get('window');
 
@@ -69,51 +70,56 @@ const Locations = ({ navigation }) => {
 				style={styles.image}
 				imageStyle={styles.image_imageStyle}
 			>
-				<View>
-					<Image
+				<ScrollView>
+					<View>
+						{/* <Image
 						source={require('../assets/view-images/park-life-logo.png')}
 						resizeMode='contain'
 						style={styles.image2}
-					></Image>
-					{locations.map((location) => {
-						const amenities = JSON.parse(location.amenities);
-						const park_id = location.park_id;
-						return (
-							<View
-								key={park_id}
-								style={[
-									cardStyles.container,
-									styles.materialCardWithImageAndTitle,
-								]}
-							>
-								<View style={cardStyles.cardBody}>
-									<View style={cardStyles.bodyContent}>
-										<Text style={cardStyles.titleStyle}>
-											{location.park_name}
-										</Text>
-										<Text style={cardStyles.subtitleStyle}>
-											{amenities.accessible ? <Text>Accessible 🦽</Text> : null}
-											{amenities.lake ? <Text>Lake! 💧</Text> : null}
-											{amenities.wildlife ? <Text>Wildlife! 🦔</Text> : null}
-											{amenities.toilet ? <Text>Toilet! 🚻</Text> : null}
-											{amenities.food ? <Text>Food! 🍦</Text> : null}
-										</Text>
+					></Image> */}
+
+						{locations.map((location) => {
+							const amenities = JSON.parse(location.amenities);
+							const park_id = location.park_id;
+							return (
+								<View
+									key={park_id}
+									style={[
+										cardStyles.container,
+										styles.materialCardWithImageAndTitle,
+									]}
+								>
+									<View style={cardStyles.cardBody}>
+										<View style={cardStyles.bodyContent}>
+											<Text style={cardStyles.titleStyle}>
+												{location.park_name}
+											</Text>
+											<Text style={cardStyles.subtitleStyle}>
+												{amenities.accessible ? (
+													<Text>Accessible 🦽</Text>
+												) : null}
+												{amenities.lake ? <Text>Lake! 💧</Text> : null}
+												{amenities.wildlife ? <Text>Wildlife! 🦔</Text> : null}
+												{amenities.toilet ? <Text>Toilet! 🚻</Text> : null}
+												{amenities.food ? <Text>Food! 🍦</Text> : null}
+											</Text>
+										</View>
+										<Image
+											style={cardStyles.cardItemImagePlace}
+											source={parkImage[park_id - 1].image}
+										></Image>
 									</View>
-									<Image
-										style={cardStyles.cardItemImagePlace}
-										source={parkImage[park_id - 1].image}
-									></Image>
+									<Button
+										title='Map List'
+										onPress={() =>
+											navigation.push('HuntList', { park_id: park_id })
+										}
+									/>
 								</View>
-								<Button
-									title='Map List'
-									onPress={() =>
-										navigation.push('HuntList', { park_id: park_id })
-									}
-								/>
-							</View>
-						);
-					})}
-				</View>
+							);
+						})}
+					</View>
+				</ScrollView>
 			</ImageBackground>
 		</View>
 	);
@@ -130,18 +136,17 @@ const styles = StyleSheet.create({
 		top: 0,
 	},
 	image_imageStyle: {},
-	image2: {
-		flexDirection: 'column',
-		height: '40%',
-		left: -60,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
+	// image2: {
+	// 	flexDirection: 'column',
+	// 	height: '40%',
+	// 	left: -60,
+	// 	justifyContent: 'center',
+	// 	alignItems: 'center',
+	// },
 	materialCardWithImageAndTitle: {
-		height: 166,
+		// height: 166,
 		width: 359,
-		position: 'absolute',
-		top: 152,
+		// top: 152,
 		left: 0,
 	},
 	image2Stack: {
