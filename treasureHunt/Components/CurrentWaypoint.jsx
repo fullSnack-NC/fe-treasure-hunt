@@ -467,7 +467,6 @@ const CurrentWaypoint = ({ navigation }) => {
 					</View>
 				</View>
 			</View>
-
 			<View
 				// pointerEvents='none'
 				style={{
