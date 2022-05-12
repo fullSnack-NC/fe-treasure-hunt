@@ -1,12 +1,12 @@
 import {
-  View,
-  Text,
-  Button,
-  Dimensions,
-  ImageBackground,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
+	View,
+	Text,
+	Button,
+	Dimensions,
+	ImageBackground,
+	StyleSheet,
+	Image,
+	TouchableOpacity,
 } from 'react-native';
 import { Audio } from 'expo-av';
 import React, { useState } from 'react';
@@ -62,111 +62,106 @@ const styles = StyleSheet.create({
 		height: height,
 	},
 
-  handoverTextContainer: {
-    backgroundColor: '#7CA85B',
-    width: '70%',
-    flex: 0.25,
-    marginLeft: '15%',
-    marginTop: '20%',
-    paddingLeft: 15,
-    paddingRight: 15,
-    paddingTop: 12,
-    paddingBottom: 12,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    borderRadius: 20,
-  },
-  handoverText: {
-    fontSize: 18,
-    color: '#ffffff',
-    textAlign: 'center',
-  },
+	handoverTextContainer: {
+		backgroundColor: '#7CA85B',
+		width: '70%',
+		flex: 0.25,
+		marginLeft: '15%',
+		marginTop: '20%',
+		paddingLeft: 15,
+		paddingRight: 15,
+		paddingTop: 12,
+		paddingBottom: 12,
+		justifyContent: 'space-around',
+		alignItems: 'center',
+		borderRadius: 20,
+	},
+	handoverText: {
+		fontSize: 18,
+		color: '#ffffff',
+		textAlign: 'center',
+	},
 });
 
 const Certificate = ({ navigation }) => {
-  const [sound, setSound] = React.useState();
-  async function playSound() {
-    const { sound } = await Audio.Sound.createAsync(
-      require('../assets/sounds/certificate-celebration.wav')
-    );
-    setSound(sound);
-    await sound.playAsync();
-  }
+	const [sound, setSound] = React.useState();
+	async function playSound() {
+		const { sound } = await Audio.Sound.createAsync(
+			require('../assets/sounds/certificate-celebration.wav')
+		);
+		setSound(sound);
+		await sound.playAsync();
+	}
 
-  React.useEffect(() => {
-    return sound
-      ? () => {
-          sound.unloadAsync();
-        }
-      : undefined;
-  }, [sound]);
+	React.useEffect(() => {
+		return sound
+			? () => {
+					sound.unloadAsync();
+			  }
+			: undefined;
+	}, [sound]);
 
-  const duration = 1000;
-  return (
-    playSound(),
-    (
-      <View style={styles.container}>
-        <View style={styles.imageStack}>
-          <ImageBackground
-            source={require('../assets/view-images/background.png')}
-            resizeMode='contain'
-            style={styles.image}
-          ></ImageBackground>
-          <Image
-            source={require('../assets/CertificateSplash.png')}
-            resizeMode='contain'
-            style={styles.image3}
-          ></Image>
+	const duration = 1000;
+	return (
+		playSound(),
+		(
+			<View style={styles.container}>
+				<View style={styles.imageStack}>
+					<ImageBackground
+						source={require('../assets/view-images/background.png')}
+						resizeMode='contain'
+						style={styles.image}
+					></ImageBackground>
+					<Image
+						source={require('../assets/CertificateSplash.png')}
+						resizeMode='contain'
+						style={styles.image3}
+					></Image>
 
-          <View style={styles.handoverTextContainer}>
-            <Text style={styles.handoverText}>
-              Well done for completing the Roundhay Park Treasure Hunt!
-            </Text>
-            <Text style={styles.handoverText}>You collected 5 acorns.</Text>
-          </View>
-          <View style={styles.acornContainer}>
-            <Image
-              source={require('../assets/acorn.png')}
-              resizeMode='contain'
-              style={styles.acorn}
-            ></Image>
-            <Image
-              source={require('../assets/acorn.png')}
-              resizeMode='contain'
-              style={styles.acorn}
-            ></Image>
-            <Image
-              source={require('../assets/acorn.png')}
-              resizeMode='contain'
-              style={styles.acorn}
-            ></Image>
-            <Image
-              source={require('../assets/acorn.png')}
-              resizeMode='contain'
-              style={styles.acorn}
-            ></Image>
-            <Image
-              source={require('../assets/acorn.png')}
-              resizeMode='contain'
-              style={styles.acorn}
-            ></Image>
-          </View>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.push('Welcome')}
-          >
-            <Image
-              source={require('../assets/view-images/BackHomeButton.png')}
-            />
-          </TouchableOpacity>
-          {/* <Button
-          style={styles.button}
-          title='Back to Home'
-          onPress={() => navigation.push('Welcome')}
-        /> */}
-        </View>
-      </View>
-    )
-  );
+					<View style={styles.handoverTextContainer}>
+						<Text style={styles.handoverText}>
+							Well done for completing the Roundhay Park Treasure Hunt!
+						</Text>
+						<Text style={styles.handoverText}>You collected 5 acorns.</Text>
+					</View>
+					<View style={styles.acornContainer}>
+						<Image
+							source={require('../assets/acorn.png')}
+							resizeMode='contain'
+							style={styles.acorn}
+						></Image>
+						<Image
+							source={require('../assets/acorn.png')}
+							resizeMode='contain'
+							style={styles.acorn}
+						></Image>
+						<Image
+							source={require('../assets/acorn.png')}
+							resizeMode='contain'
+							style={styles.acorn}
+						></Image>
+						<Image
+							source={require('../assets/acorn.png')}
+							resizeMode='contain'
+							style={styles.acorn}
+						></Image>
+						<Image
+							source={require('../assets/acorn.png')}
+							resizeMode='contain'
+							style={styles.acorn}
+						></Image>
+					</View>
+					<TouchableOpacity
+						style={styles.button}
+						onPress={() => navigation.push('Welcome')}
+					>
+						<Image
+							source={require('../assets/view-images/BackHomeButton.png')}
+						/>
+					</TouchableOpacity>
+				</View>
+			</View>
+		)
+	);
 };
 export default Certificate;
