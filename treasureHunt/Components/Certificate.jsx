@@ -17,10 +17,17 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	},
-
 	button: {
 		width: '70%',
-		backgroundColor: 'blue',
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: '70%',
+		position: 'absolute',
+		top: '45%',
+		marginLeft: '14%',
+		zIndex: 3,
+		elevation: 3,
 	},
 	image: {
 		width: '100%',
@@ -39,9 +46,7 @@ const styles = StyleSheet.create({
 		marginBottom: 25,
 	},
 	acorn: {
-		//flexDirection: 'row',
 		height: '25%',
-		//left: -60,
 		justifyContent: 'center',
 		alignItems: 'stretch',
 	},
