@@ -499,7 +499,10 @@ const CurrentWaypoint = ({ navigation }) => {
               rotateEnabled={true}
               mapType='satellite'
             >
-              <Marker coordinate={currentWaypointMarker} />
+              <Marker
+                coordinate={currentWaypointMarker}
+                image={require('../assets/squirrel.png')}
+              />
               <View style={styles.mapData}>
                 <Text
                   style={{
