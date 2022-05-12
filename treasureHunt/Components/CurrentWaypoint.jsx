@@ -6,14 +6,16 @@ import {
   ImageBackground,
   Dimensions,
   StyleSheet,
+  Vibrations,
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { REACT_APP_MAPS_API_KEY } from '@env';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import globalStyles from '../css/style';
 import { getWaypointByMapID } from '../utils/api';
+import { Audio } from 'expo-av';
 const geolib = require('geolib');
 
 const screenWidth = Dimensions.get('window').width;
@@ -191,6 +193,30 @@ const styles = StyleSheet.create({
 
 const CurrentWaypoint = ({ navigation }) => {
   const [CurrentWaypoint_id, setCurrentWaypoint_id] = useState(0);
+  const [sound, setSound] = React.useState();
+  async function playSound() {
+    const { sound } = await Audio.Sound.createAsync(
+      require('../assets/sounds/waypoint-beep.mp3')
+    );
+    setSound(sound);
+    await sound.playAsync();
+  }
+
+  React.useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
+  const durationA = 900;
+  const durationB = 700;
+  const durationC = 500;
+  const durationD = 300;
+  const durationE = 200;
+  const durationF = 100;
+
   const waypointPositions = [
     {
       wayPoint_id: 1,
@@ -289,24 +315,67 @@ const CurrentWaypoint = ({ navigation }) => {
     if (300 < distance && distance <= 500) {
       setBackgroundColor('#0662CE');
       setDistanceMsg('You’re freezing cold...brrrrrr');
+      // vibeGo(durationF);
+      // vibeGo(durationF);
+      // playSound();
     } else if (200 < distance && distance <= 300) {
       setBackgroundColor('#3781D7');
       setDistanceMsg('You’re cold');
+      vibeGo(durationE);
+      vibeGo(durationE);
+      playSound();
+      playSound();
     } else if (150 < distance && distance <= 200) {
       setBackgroundColor('#B3EAF2');
       setDistanceMsg("You're warm");
+      vibeGo(durationD);
+      vibeGo(durationD);
+      playSound();
+      playSound();
+      playSound();
     } else if (80 < distance && distance <= 150) {
       setBackgroundColor('#FFC899');
       setDistanceMsg('It’s toasty warm');
+      vibeGo(durationC);
+      vibeGo(durationC);
+      playSound();
+      playSound();
+      playSound();
+      playSound();
     } else if (40 < distance && distance <= 80) {
       setBackgroundColor('#FFAD66');
       setDistanceMsg('You’re quite hot now');
+      vibeGo(durationB);
+      vibeGo(durationB);
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+      playSound();
     } else if (0 <= distance && distance < 40) {
       setBackgroundColor('#FF9232');
       setDistanceMsg('You’re red hot!');
+      vibeGo(durationA);
+      vibeGo(durationA);
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+      playSound();
     } else if (0 === distance) {
       setBackgroundColor('#FF7700');
       setDistanceMsg('Scorching! You have arrived!');
+      vibeGo(durationA);
+      vibeGo(durationA);
+      vibeGo(durationA);
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+      playSound();
     }
 
     const timer = setTimeout(() => {
