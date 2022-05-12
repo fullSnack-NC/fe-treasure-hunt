@@ -196,7 +196,7 @@ const CurrentWaypoint = ({ navigation }) => {
 	const [CurrentWaypoint_id, setCurrentWaypoint_id] = useState(0);
 	const [sound, setSound] = React.useState();
 	async function playSound() {
-		const { sound } = await Audio.Sound.createAsync(require('../assets/sounds/waypoint-beep.mp3'));
+		const { sound } = await Audio.Sound.createAsync(require('../assets/sounds/waypoint-beep.wav'));
 		setSound(sound);
 		await sound.playAsync();
 	}
