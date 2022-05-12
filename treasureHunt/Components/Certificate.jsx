@@ -14,49 +14,53 @@ import React, { useState } from 'react';
 const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-
-  button: {
-    width: '70%',
-    left: 100,
-    top: 230,
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    top: 0,
-  },
-  acornContainer: {
-    flex: 0.25,
-    justifyContent: 'space-around',
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    marginLeft: 75,
-    marginRight: 75,
-    marginTop: 25,
-    marginBottom: 25,
-  },
-  acorn: {
-    //flexDirection: 'row',
-    height: '25%',
-    //left: -60,
-    justifyContent: 'center',
-    alignItems: 'stretch',
-  },
-  image3: {
-    top: 300,
-    left: 30,
-    width: 345,
-    height: 362,
-    position: 'absolute',
-  },
-  imageStack: {
-    width: width,
-    height: height,
-  },
+	container: {
+		flex: 1,
+	},
+	button: {
+		width: '70%',
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: '70%',
+		position: 'absolute',
+		top: '45%',
+		marginLeft: '14%',
+		zIndex: 3,
+		elevation: 3,
+	},
+	image: {
+		width: '100%',
+		height: '100%',
+		position: 'absolute',
+		top: 0,
+	},
+	acornContainer: {
+		flex: 0.25,
+		justifyContent: 'space-around',
+		flexDirection: 'row',
+		alignItems: 'stretch',
+		marginLeft: 75,
+		marginRight: 75,
+		marginTop: 25,
+		marginBottom: 25,
+	},
+	acorn: {
+		height: '25%',
+		justifyContent: 'center',
+		alignItems: 'stretch',
+	},
+	image3: {
+		top: 300,
+		left: 30,
+		width: 345,
+		height: 362,
+		position: 'absolute',
+	},
+	imageStack: {
+		width: width,
+		height: height,
+	},
 
   handoverTextContainer: {
     backgroundColor: '#7CA85B',
