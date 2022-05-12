@@ -1,197 +1,23 @@
-import {
-	View,
-	Text,
-	Image,
-	ScrollView,
-	ImageBackground,
-	Dimensions,
-	StyleSheet,
-	Vibrations,
-} from 'react-native';
+import { View, Text, Image, ScrollView, ImageBackground, Dimensions } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import React, { useState, useEffect } from 'react';
 import { REACT_APP_MAPS_API_KEY } from '@env';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import globalStyles from '../css/style';
+import currentWaypointStyles from '../css/currentWaypoint';
 import { getWaypointByMapID } from '../utils/api';
 import { Audio } from 'expo-av';
+import waypointPositions from '../data/waypoints';
 const geolib = require('geolib');
-
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-	imageStack: {
-		width: screenWidth,
-		height: screenHeight,
-	},
-	image: {
-		width: '100%',
-		height: '100%',
-		position: 'absolute',
-		top: 0,
-	},
-	clueImage: {
-		display: 'flex',
-		position: 'absolute',
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'center',
-		width: '100%',
-		height: '97%',
-		borderColor: '#fff',
-		borderWidth: 2,
-		marginTop: 50,
-		paddingTop: 20,
-		borderWidth: 2,
-		borderRadius: 25,
-	},
-	clueSwipe: {
-		display: 'flex',
-		position: 'absolute',
-		flexDirection: 'column',
-		justifyContent: 'flex-end',
-		alignItems: 'center',
-		width: screenWidth - 20,
-		height: screenHeight - 30,
-		paddingBottom: 30,
-		paddingLeft: 10,
-		paddingRight: 10,
-		marginLeft: 10,
-		bottom: 50,
-	},
-	mapView: {
-		flex: 1,
-		display: 'flex',
-		flexDirection: 'column',
-		flexWrap: 'nowrap',
-		justifyContent: 'space-around',
-		alignItems: 'center',
-		marginTop: 50,
-		marginBottom: 30,
-		paddingBottom: 90,
-		paddingTop: 50,
-		position: 'relative',
-		width: screenWidth - 40,
-		borderWidth: 2,
-		borderColor: 'white',
-		borderRadius: 25,
-	},
-	mapData: {
-		display: 'flex',
-		position: 'relative',
-		flexDirection: 'column',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		width: screenWidth - 20,
-		height: screenHeight - 40,
-		paddingTop: 10,
-		paddingBottom: 10,
-		paddingLeft: 10,
-		paddingRight: 10,
-		marginLeft: 10,
-	},
-	mapData2: {
-		display: 'flex',
-		position: 'relative',
-		flexDirection: 'column',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		width: screenWidth - 20,
-		height: screenHeight - 40,
-		paddingTop: 90,
-		paddingBottom: 10,
-		paddingLeft: 10,
-		paddingRight: 10,
-		marginLeft: 10,
-	},
-
-	button: {
-		position: 'absolute',
-		left: 0,
-		bottom: 50,
-		zIndex: 999,
-	},
-	acornContainer: {
-		position: 'absolute',
-		bottom: 110,
-		right: 35,
-		flexDirection: 'column-reverse',
-	},
-	acorn: {
-		height: 40,
-		width: 40,
-		marginTop: 5,
-		borderRadius: 10,
-	},
-	smallTxt: {
-		fontSize: 20,
-		fontWeight: '400',
-		paddingLeft: 10,
-		lineHeight: 20,
-		color: '#fff',
-	},
-	mapBtn: {
-		display: 'flex',
-		margin: 10,
-		left: 10,
-		bottom: 10,
-		borderRadius: 10,
-		width: 150,
-		position: 'relative',
-		height: 40,
-		alignItems: 'center',
-		justifyContent: 'flex-end',
-	},
-	woodenBtn: {
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		right: 0,
-		bottom: 0,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	mapBtnText: {
-		display: 'flex',
-		position: 'absolute',
-		padding: 'auto',
-		margin: 'auto',
-		fontWeight: '700',
-		flexDirection: 'row',
-		alignItems: 'center',
-		fontSize: 15,
-		color: '#fff',
-	},
-	clueSwipeInstruction: {
-		position: 'absolute',
-		bottom: 20,
-		fontSize: 22,
-		padding: 20,
-		color: '#ffffff',
-		fontWeight: '500',
-		backgroundColor: '#867957',
-		opacity: 0.9,
-	},
-	mapSwipeBtn: {
-		bottom: 25,
-	},
-	clueSwipeBtn: {
-		bottom: -80,
-	},
-});
 
 const CurrentWaypoint = ({ navigation }) => {
 	const [CurrentWaypoint_id, setCurrentWaypoint_id] = useState(0);
 	const [sound, setSound] = React.useState();
 	async function playSound() {
-		const { sound } = await Audio.Sound.createAsync(
-			require('../assets/sounds/waypoint-beep.wav')
-		);
+		const { sound } = await Audio.Sound.createAsync(require('../assets/sounds/waypoint-beep.wav'));
 		setSound(sound);
 		await sound.playAsync();
 	}
@@ -210,52 +36,9 @@ const CurrentWaypoint = ({ navigation }) => {
 	const durationD = 300;
 	const durationE = 200;
 	const durationF = 100;
-	const waypointPositions = [
-		{
-			wayPoint_id: 1,
-			latitude: 53.838172,
-			longitude: -1.503277,
-			latitudeDelta: 0.01,
-			longitudeDelta: 0.01,
-			imgPath: require('../assets/waypoint-images/1_1.png'),
-		},
-		{
-			wayPoint_id: 2,
-			latitude: 53.837907,
-			longitude: -1.499438,
-			latitudeDelta: 0.01,
-			longitudeDelta: 0.01,
-			imgPath: require('../assets/waypoint-images/1_2.png'),
-		},
-		{
-			wayPoint_id: 3,
-			latitude: 53.83561,
-			longitude: -1.497038,
-			latitudeDelta: 0.01,
-			longitudeDelta: 0.01,
-			imgPath: require('../assets/waypoint-images/1_3.png'),
-		},
-		{
-			wayPoint_id: 4,
-			latitude: 53.837088,
-			longitude: -1.495215,
-			latitudeDelta: 0.01,
-			longitudeDelta: 0.01,
-			imgPath: require('../assets/waypoint-images/1_4.png'),
-		},
-		{
-			wayPoint_id: 5,
-			latitude: 53.839485,
-			longitude: -1.497238,
-			latitudeDelta: 0.01,
-			longitudeDelta: 0.01,
-			image: require('../assets/waypoint-images/1_5.png'),
-		},
-	];
+
 	const [isLoading, setIsLoading] = useState(true);
-	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(
-		waypointPositions[0]
-	);
+	const [currentWaypointMarker, setcurrentWaypointMarker] = useState(waypointPositions[0]);
 	const [location, setLocation] = useState({
 		latitude: 0,
 		longitude: 0,
@@ -377,11 +160,7 @@ const CurrentWaypoint = ({ navigation }) => {
 
 	const incrementAcorn = () => {
 		const acorn = (
-			<Image
-				key={CurrentWaypoint_id}
-				style={styles.acorn}
-				source={require('../assets/acorn.png')}
-			/>
+			<Image key={CurrentWaypoint_id} style={currentWaypointStyles.acorn} source={require('../assets/acorn.png')} />
 		);
 		setAcorns((currAcorns) => currAcorns + 1);
 		setAcornImgs((currAcorns) => {
@@ -425,25 +204,20 @@ const CurrentWaypoint = ({ navigation }) => {
 					},
 				]}
 			>
-				<View style={styles.imageStack}>
+				<View style={currentWaypointStyles.imageStack}>
 					<ImageBackground
 						source={require('../assets/fullSnack-background-clear.png')}
 						resizeMode='contain'
-						style={styles.image}
+						style={currentWaypointStyles.image}
 					></ImageBackground>
-					<View style={styles.clueSwipe}>
+					<View style={currentWaypointStyles.clueSwipe}>
 						<Image
 							source={waypointPositions[CurrentWaypoint_id].imgPath}
 							resizeMode='cover'
-							style={styles.clueImage}
+							style={currentWaypointStyles.clueImage}
 						/>
-						<Text style={styles.clueSwipeInstruction}>
-							Can you find this place?
-						</Text>
-						<Image
-							style={styles.clueSwipeBtn}
-							source={require('../assets/swipe_right.png')}
-						/>
+						<Text style={currentWaypointStyles.clueSwipeInstruction}>Can you find this place?</Text>
+						<Image style={currentWaypointStyles.clueSwipeBtn} source={require('../assets/swipe_right.png')} />
 					</View>
 				</View>
 			</View>
@@ -463,12 +237,12 @@ const CurrentWaypoint = ({ navigation }) => {
 				<ImageBackground
 					source={require('../assets/fullSnack-background-clear.png')}
 					resizeMode='contain'
-					style={styles.image}
+					style={currentWaypointStyles.image}
 				></ImageBackground>
 				{location && (
 					<View>
 						<MapView
-							style={styles.mapView}
+							style={currentWaypointStyles.mapView}
 							provider={PROVIDER_GOOGLE}
 							apiKey={apiKey}
 							region={region}
@@ -477,11 +251,8 @@ const CurrentWaypoint = ({ navigation }) => {
 							rotateEnabled={true}
 							mapType='satellite'
 						>
-							<Marker
-								coordinate={currentWaypointMarker}
-								image={require('../assets/squirrel.png')}
-							/>
-							<View style={styles.mapData}>
+							<Marker coordinate={currentWaypointMarker} image={require('../assets/squirrel.png')} />
+							<View style={currentWaypointStyles.mapData}>
 								<Text
 									style={{
 										// marginTop: 20,
@@ -493,24 +264,19 @@ const CurrentWaypoint = ({ navigation }) => {
 									}}
 								>
 									{distance}
-									<Text style={styles.smallTxt}>m</Text>
+									<Text style={currentWaypointStyles.smallTxt}>m</Text>
 								</Text>
-								<View style={styles.mapData2}>
-									<Text style={styles.smallTxt}>{distanceMsg}</Text>
+								<View style={currentWaypointStyles.mapData2}>
+									<Text style={currentWaypointStyles.smallTxt}>{distanceMsg}</Text>
 								</View>
-								<View style={styles.acornContainer}>{acornImgs}</View>
+								<View style={currentWaypointStyles.acornContainer}>{acornImgs}</View>
 							</View>
 							<View>
 								{distance < 40 && (
-									<TouchableOpacity
-										style={[styles.mapBtn]}
-										onPress={() => handlePress()}
-									>
-										<View style={styles.woodenBtn}>
-											<Image
-												source={require('../assets/view-images/foundButton.png')}
-											/>
-											{/* <Text style={styles.mapBtnText}>Found this place</Text> */}
+									<TouchableOpacity style={[styles.mapBtn]} onPress={() => handlePress()}>
+										<View style={currentWaypointStyles.woodenBtn}>
+											<Image source={require('../assets/view-images/foundButton.png')} />
+											{/* <Text style={currentWaypointStyles.mapBtnText}>Found this place</Text> */}
 										</View>
 									</TouchableOpacity>
 								)}
@@ -519,10 +285,7 @@ const CurrentWaypoint = ({ navigation }) => {
 					</View>
 				)}
 				<View>
-					<Image
-						style={styles.mapSwipeBtn}
-						source={require('../assets/swipe_left.png')}
-					/>
+					<Image style={currentWaypointStyles.mapSwipeBtn} source={require('../assets/swipe_left.png')} />
 				</View>
 			</View>
 		</ScrollView>
