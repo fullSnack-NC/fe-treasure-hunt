@@ -16,23 +16,100 @@ import globalStyles from '../css/style';
 import { getWaypointByMapID } from '../utils/api';
 const geolib = require('geolib');
 
-const { width, height } = Dimensions.get('window');
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   container: {
-    //width: '100%',
-    //height: '100%',
     flex: 1,
   },
   imageStack: {
-    width: width,
-    height: height,
+    width: screenWidth,
+    height: screenHeight,
   },
   image: {
     width: '100%',
     height: '100%',
     position: 'absolute',
     top: 0,
+  },
+  clueImage: {
+    display: 'flex',
+    position: 'absolute',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    borderRadius: 10,
+    borderColor: '#867957',
+    borderWidth: 2,
+  },
+  clueSwipe: {
+    display: 'flex',
+    position: 'absolute',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    width: screenWidth - 20,
+    height: screenHeight - 30,
+    paddingBottom: 30,
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginLeft: 10,
+  },
+  mapView: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'nowrap',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginTop: 72,
+    marginBottom: 30,
+    paddingBottom: 90,
+    paddingTop: 70,
+    position: 'relative',
+    width: screenWidth - 40,
+    borderWidth: 2,
+    borderColor: 'white',
+    borderRadius: 25,
+  },
+  mapData: {
+    display: 'flex',
+    position: 'relative',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: screenWidth - 20,
+    height: screenHeight - 40,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginLeft: 10,
+  },
+  mapData2: {
+    display: 'flex',
+    position: 'relative',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: screenWidth - 20,
+    height: screenHeight - 40,
+    paddingTop: 90,
+    paddingBottom: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginLeft: 10,
+  },
+  mapSwipeSection: {
+    display: 'flex',
+    position: 'relative',
+    flexDirection: 'column',
+    paddingBottom: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   button: {
     position: 'absolute',
@@ -42,8 +119,8 @@ const styles = StyleSheet.create({
   },
   acornContainer: {
     position: 'absolute',
-    bottom: 10,
-    right: 10,
+    bottom: 110,
+    right: 35,
     flexDirection: 'column-reverse',
   },
   acorn: {
@@ -58,6 +135,57 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     lineHeight: 20,
     color: '#fff',
+  },
+  mapBtn: {
+    display: 'flex',
+    margin: 10,
+    left: 10,
+    bottom: 10,
+    borderRadius: 10,
+    width: 150,
+    position: 'relative',
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  woodenBtn: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  mapBtnText: {
+    display: 'flex',
+    position: 'absolute',
+    padding: 'auto',
+    margin: 'auto',
+    fontWeight: '700',
+    flexDirection: 'row',
+    alignItems: 'center',
+    fontSize: 15,
+    color: '#fff',
+  },
+  clueSwipeInstruction: {
+    fontSize: 22,
+    paddingTop: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 20,
+    color: '#ffffff',
+    fontWeight: '500',
+    backgroundColor: '#867957',
+    opacity: 0.9,
+  },
+  mapSwipeInstruction: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+    fontSize: 24,
+    paddingBottom: 40,
   },
 });
 
@@ -123,8 +251,6 @@ const CurrentWaypoint = ({ navigation }) => {
   const [acornImgs, setAcornImgs] = useState([]);
   const [errorMsg, setErrorMsg] = useState(null);
   const apiKey = REACT_APP_MAPS_API_KEY;
-  const screenWidth = Dimensions.get('window').width;
-  const screenHeight = Dimensions.get('window').height;
   const distance = geolib.getDistance(
     {
       latitude: location.latitude,
@@ -161,31 +287,24 @@ const CurrentWaypoint = ({ navigation }) => {
     };
 
     if (300 < distance && distance <= 500) {
-      //setBackgroundColor('#2B4279');
       setBackgroundColor('#0662CE');
-      setDistanceMsg('You’re freezing cold…brrrrrr');
+      setDistanceMsg('You’re freezing cold...brrrrrr');
     } else if (200 < distance && distance <= 300) {
-      //setBackgroundColor('#65428C');
       setBackgroundColor('#3781D7');
       setDistanceMsg('You’re cold');
     } else if (150 < distance && distance <= 200) {
-      //setBackgroundColor('#A1378B');
       setBackgroundColor('#B3EAF2');
       setDistanceMsg("You're warm");
     } else if (80 < distance && distance <= 150) {
-      //setBackgroundColor('#D42374');
       setBackgroundColor('#FFC899');
       setDistanceMsg('It’s toasty warm');
     } else if (40 < distance && distance <= 80) {
-      //setBackgroundColor('#F62B4C');
       setBackgroundColor('#FFAD66');
-      setDistanceMsg('You’re quite hot… be careful you don’t burn');
+      setDistanceMsg('You’re quite hot now');
     } else if (0 <= distance && distance < 40) {
-      //setBackgroundColor('#FF5800');
       setBackgroundColor('#FF9232');
       setDistanceMsg('You’re red hot!');
     } else if (0 === distance) {
-      // setBackgroundColor('#FF5800');
       setBackgroundColor('#FF7700');
       setDistanceMsg('Scorching! You have arrived!');
     }
@@ -267,34 +386,26 @@ const CurrentWaypoint = ({ navigation }) => {
             resizeMode='contain'
             style={styles.image}
           ></ImageBackground>
-          <Image
-            source={waypointPositions[CurrentWaypoint_id].imgPath}
-            resizeMode='cover'
-            style={{
-              flex: 1,
-              margin: 20,
-              height: screenHeight,
-              width: screenWidth - 50,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 10,
-              borderColor: '#867957',
-              borderWidth: 2,
-            }}
-          />
-          <Text style={{}}>Swipe right for the map</Text>
-          {/* <TouchableOpacity style={[globalStyles.baseBtn]}>
-					<Text style={globalStyles.btnText}>Find the next treasure</Text>
-				</TouchableOpacity> */}
+          <View style={styles.clueSwipe}>
+            <Image
+              source={waypointPositions[CurrentWaypoint_id].imgPath}
+              resizeMode='cover'
+              style={styles.clueImage}
+            />
+            <Text style={styles.clueSwipeInstruction}>
+              Can you find this place? Swipe right for the map ➡️
+            </Text>
+          </View>
         </View>
       </View>
 
       <View
         // pointerEvents='none'
         style={{
-          paddingVerticle: 50,
+          paddinngVertical: 0,
           flex: 1,
           flexDirection: 'column',
+          // marginTop: 20,
           height: screenHeight,
           width: screenWidth,
           justifyContent: 'center',
@@ -308,63 +419,60 @@ const CurrentWaypoint = ({ navigation }) => {
           style={styles.image}
         ></ImageBackground>
         {location && (
-          <MapView
-            style={{
-              position: 'relative',
-              height: screenHeight - 100,
-              width: screenWidth - 50,
-              borderWidth: 2,
-              borderColor: 'white',
-              borderRadius: 25,
-              // justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'column',
-            }}
-            provider={PROVIDER_GOOGLE}
-            apiKey={apiKey}
-            region={region}
-            showsUserLocation={true}
-            scrollEnabled={true}
-            rotateEnabled={true}
-            mapType='satellite'
-          >
-            <Marker coordinate={currentWaypointMarker} />
-            <Text
-              style={{
-                // marginTop: 20,
-                color: '#fff',
-                fontSize: 60,
-                fontWeight: '600',
-                paddingLeft: 10,
-                textAlign: 'left',
-              }}
+          <View>
+            <MapView
+              style={styles.mapView}
+              provider={PROVIDER_GOOGLE}
+              apiKey={apiKey}
+              region={region}
+              showsUserLocation={true}
+              scrollEnabled={true}
+              rotateEnabled={true}
+              mapType='satellite'
             >
-              {distance}
-              <Text style={styles.smallTxt}>m</Text>
-            </Text>
-            <Text style={styles.smallTxt}>{distanceMsg}</Text>
-            <View style={styles.acornContainer}>{acornImgs}</View>
-          </MapView>
+              <Marker coordinate={currentWaypointMarker} />
+              <View style={styles.mapData}>
+                <Text
+                  style={{
+                    // marginTop: 20,
+                    color: '#fff',
+                    fontSize: 60,
+                    fontWeight: '600',
+                    paddingLeft: 10,
+                    textAlign: 'left',
+                  }}
+                >
+                  {distance}
+                  <Text style={styles.smallTxt}>m</Text>
+                </Text>
+                <View style={styles.mapData2}>
+                  <Text style={styles.smallTxt}>{distanceMsg}</Text>
+                </View>
+                <View style={styles.acornContainer}>{acornImgs}</View>
+              </View>
+              <View>
+                {distance < 40 && (
+                  <TouchableOpacity
+                    style={[styles.mapBtn]}
+                    onPress={() => handlePress()}
+                  >
+                    <View style={styles.woodenBtn}>
+                      <Image
+                        source={require('../assets/view-images/wooden-button-small.png')}
+                      />
+                      <Text style={styles.mapBtnText}>Found this place</Text>
+                    </View>
+                  </TouchableOpacity>
+                )}
+              </View>
+            </MapView>
+          </View>
         )}
-        {distance < 40 && (
-          <TouchableOpacity
-            style={[
-              globalStyles.baseBtn,
-              // {
-              // 	flex: 1,
-              // 	position: 'absolute',
-              // 	left: '-40%',
-              // 	bottom: 0,
-              // 	width: '80%',
-              // 	height: 50,
-              // 	zIndex: 10,
-              // },
-            ]}
-            onPress={() => handlePress()}
-          >
-            <Text style={globalStyles.btnText}>Found</Text>
-          </TouchableOpacity>
-        )}
+        <View style={styles.mapSwipeSection}>
+          <Text style={styles.mapSwipeInstruction}>
+            ⬅️ Swipe left to see clue
+          </Text>
+        </View>
       </View>
     </ScrollView>
   );
