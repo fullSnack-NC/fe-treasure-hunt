@@ -122,19 +122,19 @@ const Locations = ({ navigation }) => {
 												</Text>
 												<View style={cardStyles.subtitleStyle}>
 													{amenities.accessible ? (
-														<Text style={{ fontSize: '30' }}>🦽</Text>
+														<Text style={{ fontSize: 30 }}>🦽</Text>
 													) : null}
 													{amenities.lake ? (
-														<Text style={{ fontSize: '30' }}>💧</Text>
+														<Text style={{ fontSize: 30 }}>💧</Text>
 													) : null}
 													{amenities.wildlife ? (
-														<Text style={{ fontSize: '30' }}> 🦔</Text>
+														<Text style={{ fontSize: 30 }}> 🦔</Text>
 													) : null}
 													{amenities.toilet ? (
-														<Text style={{ fontSize: '30' }}> 🚻</Text>
+														<Text style={{ fontSize: 30 }}> 🚻</Text>
 													) : null}
 													{amenities.food ? (
-														<Text style={{ fontSize: '30' }}> 🍦</Text>
+														<Text style={{ fontSize: 30 }}> 🍦</Text>
 													) : null}
 												</View>
 											</View>
