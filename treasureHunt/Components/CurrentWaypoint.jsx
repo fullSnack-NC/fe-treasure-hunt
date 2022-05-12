@@ -1,12 +1,12 @@
 import {
-	View,
-	Text,
-	Image,
-	ScrollView,
-	ImageBackground,
-	Dimensions,
-	StyleSheet,
-	Vibrations,
+  View,
+  Text,
+  Image,
+  ScrollView,
+  ImageBackground,
+  Dimensions,
+  StyleSheet,
+  Vibrations,
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -201,21 +201,20 @@ const CurrentWaypoint = ({ navigation }) => {
 		await sound.playAsync();
 	}
 
-	React.useEffect(() => {
-		return sound
-			? () => {
-					sound.unloadAsync();
-			  }
-			: undefined;
-	}, [sound]);
+  React.useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
 
-	const durationA = 900;
-	const durationB = 700;
-	const durationC = 500;
-	const durationD = 300;
-	const durationE = 200;
-	const durationF = 100;
-
+  const durationA = 900;
+  const durationB = 700;
+  const durationC = 500;
+  const durationD = 300;
+  const durationE = 200;
+  const durationF = 100;
 	const waypointPositions = [
 		{
 			wayPoint_id: 1,
@@ -287,114 +286,114 @@ const CurrentWaypoint = ({ navigation }) => {
 	const [backgroundColor, setBackgroundColor] = useState('#B3EAF2');
 	const [distanceMsg, setDistanceMsg] = useState('');
 
-	useEffect(() => {
-		async () => {
-			let { status } = await Location.requestForegroundPermissionsAsync();
-			if (status !== 'granted') {
-				setErrorMsg('Permission to access location was denied');
-				return;
-			}
-		};
-		const getLocation = async () => {
-			const location = await Location.getCurrentPositionAsync({});
-			setLocation({
-				latitude: location.coords.latitude,
-				longitude: location.coords.longitude,
-			});
-			setRegion({
-				latitude: location.coords.latitude,
-				longitude: location.coords.longitude,
-				latitudeDelta: 0.003922,
-				longitudeDelta: 0.003421,
-			});
-		};
+  useEffect(() => {
+    async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+    };
+    const getLocation = async () => {
+      const location = await Location.getCurrentPositionAsync({});
+      setLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+      setRegion({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.003922,
+        longitudeDelta: 0.003421,
+      });
+    };
 
-		if (300 < distance && distance <= 500) {
-			setBackgroundColor('#0662CE');
-			setDistanceMsg('You’re freezing cold...brrrrrr');
-			// vibeGo(durationF);
-			// vibeGo(durationF);
-			// playSound();
-		} else if (200 < distance && distance <= 300) {
-			setBackgroundColor('#3781D7');
-			setDistanceMsg('You’re cold');
-			vibeGo(durationE);
-			vibeGo(durationE);
-			playSound();
-			playSound();
-		} else if (150 < distance && distance <= 200) {
-			setBackgroundColor('#B3EAF2');
-			setDistanceMsg("You're warm");
-			vibeGo(durationD);
-			vibeGo(durationD);
-			playSound();
-			playSound();
-			playSound();
-		} else if (80 < distance && distance <= 150) {
-			setBackgroundColor('#FFC899');
-			setDistanceMsg('It’s toasty warm');
-			vibeGo(durationC);
-			vibeGo(durationC);
-			playSound();
-			playSound();
-			playSound();
-			playSound();
-		} else if (40 < distance && distance <= 80) {
-			setBackgroundColor('#FFAD66');
-			setDistanceMsg('You’re quite hot now');
-			vibeGo(durationB);
-			vibeGo(durationB);
-			playSound();
-			playSound();
-			playSound();
-			playSound();
-			playSound();
-		} else if (0 <= distance && distance < 40) {
-			setBackgroundColor('#FF9232');
-			setDistanceMsg('You’re red hot!');
-			vibeGo(durationA);
-			vibeGo(durationA);
-			playSound();
-			playSound();
-			playSound();
-			playSound();
-			playSound();
-			playSound();
-		} else if (0 === distance) {
-			setBackgroundColor('#FF7700');
-			setDistanceMsg('Scorching! You have arrived!');
-			vibeGo(durationA);
-			vibeGo(durationA);
-			vibeGo(durationA);
-			playSound();
-			playSound();
-			playSound();
-			playSound();
-			playSound();
-			playSound();
-			playSound();
-		}
+    if (300 < distance && distance <= 500) {
+      setBackgroundColor('#0662CE');
+      setDistanceMsg('You’re freezing cold...brrrrrr');
+      // vibeGo(durationF);
+      // vibeGo(durationF);
+      // playSound();
+    } else if (200 < distance && distance <= 300) {
+      setBackgroundColor('#3781D7');
+      setDistanceMsg('You’re cold');
+      vibeGo(durationE);
+      vibeGo(durationE);
+      playSound();
+      playSound();
+    } else if (150 < distance && distance <= 200) {
+      setBackgroundColor('#B3EAF2');
+      setDistanceMsg("You're warm");
+      vibeGo(durationD);
+      vibeGo(durationD);
+      playSound();
+      playSound();
+      playSound();
+    } else if (80 < distance && distance <= 150) {
+      setBackgroundColor('#FFC899');
+      setDistanceMsg('It’s toasty warm');
+      vibeGo(durationC);
+      vibeGo(durationC);
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+    } else if (40 < distance && distance <= 80) {
+      setBackgroundColor('#FFAD66');
+      setDistanceMsg('You’re quite hot now');
+      vibeGo(durationB);
+      vibeGo(durationB);
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+    } else if (0 <= distance && distance < 40) {
+      setBackgroundColor('#FF9232');
+      setDistanceMsg('You’re red hot!');
+      vibeGo(durationA);
+      vibeGo(durationA);
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+    } else if (0 === distance) {
+      setBackgroundColor('#FF7700');
+      setDistanceMsg('Scorching! You have arrived!');
+      vibeGo(durationA);
+      vibeGo(durationA);
+      vibeGo(durationA);
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+      playSound();
+    }
 
-		const timer = setTimeout(() => {
-			getLocation();
-		}, 2000);
+    const timer = setTimeout(() => {
+      getLocation();
+    }, 2000);
 
-		return () => clearTimeout(timer);
-	}, [location, region, distance]);
+    return () => clearTimeout(timer);
+  }, [location, region, distance]);
 
-	// useEffect(() => {
-	// 	getWaypointByMapID(map_id)
-	// 		.then((data) => {
-	// 			setWaypoints(data);
-	// 			setIsLoading(false);
-	// 			setErrorMsg(null);
-	// 		})
-	// 		.catch((err) => {
-	// 			console.log(err.response.data);
-	// 			setErrorMsg({ err });
-	// 			setIsLoading(false);
-	// 		});
-	// }, []);
+  // useEffect(() => {
+  // 	getWaypointByMapID(map_id)
+  // 		.then((data) => {
+  // 			setWaypoints(data);
+  // 			setIsLoading(false);
+  // 			setErrorMsg(null);
+  // 		})
+  // 		.catch((err) => {
+  // 			console.log(err.response.data);
+  // 			setErrorMsg({ err });
+  // 			setIsLoading(false);
+  // 		});
+  // }, []);
 
 	const incrementAcorn = () => {
 		const acorn = <Image key={CurrentWaypoint_id} style={styles.acorn} source={require('../assets/acorn.png')} />;
@@ -418,11 +417,11 @@ const CurrentWaypoint = ({ navigation }) => {
 	};
 	let text = 'Waiting..';
 
-	if (errorMsg) {
-		text = errorMsg;
-	} else if (location) {
-		text = JSON.stringify(location);
-	}
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = JSON.stringify(location);
+  }
 
 	return (
 		<ScrollView horizontal={true} pagingEnabled={true}>
