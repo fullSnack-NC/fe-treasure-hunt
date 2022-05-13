@@ -86,45 +86,45 @@ const CurrentWaypoint = ({ navigation }) => {
 			vibeGo(duration(2));
 			vibeGo(duration(2));
 			playSound();
-			// playSound();
+			playSound();
 		} else if (150 < distance && distance <= 200) {
 			setBackgroundColor('#B3EAF2');
 			setDistanceMsg("You're warm");
 			vibeGo(duration(3));
 			vibeGo(duration(3));
 			playSound();
-			// playSound();
-			// playSound();
+			playSound();
+			playSound();
 		} else if (80 < distance && distance <= 150) {
 			setBackgroundColor('#FFC899');
 			setDistanceMsg('It’s toasty warm');
 			vibeGo(duration(5));
 			vibeGo(duration(5));
 			playSound();
-			// playSound();
-			// playSound();
-			// playSound();
+			playSound();
+			playSound();
+			playSound();
 		} else if (40 < distance && distance <= 80) {
 			setBackgroundColor('#FFAD66');
 			setDistanceMsg('You’re quite hot now');
 			vibeGo(duration(7));
 			vibeGo(duration(7));
 			playSound();
-			// playSound();
-			// playSound();
-			// playSound();
-			// playSound();
+			playSound();
+			playSound();
+			playSound();
+			playSound();
 		} else if (0 <= distance && distance < 40) {
 			setBackgroundColor('#FF9232');
 			setDistanceMsg('You’re red hot!');
 			vibeGo(duration(9));
 			vibeGo(duration(9));
 			playSound();
-			// playSound();
-			// playSound();
-			// playSound();
-			// playSound();
-			// playSound();
+			playSound();
+			playSound();
+			playSound();
+			playSound();
+			playSound();
 		} else if (0 === distance) {
 			setBackgroundColor('#FF7700');
 			setDistanceMsg('Scorching! You have arrived!');
@@ -132,12 +132,12 @@ const CurrentWaypoint = ({ navigation }) => {
 			vibeGo(duration(9));
 			vibeGo(duration(9));
 			playSound();
-			// playSound();
-			// playSound();
-			// playSound();
-			// playSound();
-			// playSound();
-			// playSound();
+			playSound();
+			playSound();
+			playSound();
+			playSound();
+			playSound();
+			playSound();
 		}
 
 		const timer = setTimeout(() => {
