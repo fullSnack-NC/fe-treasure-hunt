@@ -92,12 +92,29 @@ const HuntList = ({ route, navigation }) => {
 	}, []);
 
 	if (isLoading) {
-		return <Text>Maps Loading...</Text>;
+		return (
+			<ImageBackground
+				style={styles.bgImage}
+				source={require('../assets/view-images/background-noLamp.png')}
+				resizeMode='cover'
+			>
+				<Text style={styles.smallTxt}>Maps Loading...</Text>
+			</ImageBackground>
+		);
 	}
 
 	if (error) {
-		return <Text>Parks not found</Text>;
+		return (
+			<ImageBackground
+				style={styles.bgImage}
+				source={require('../assets/view-images/background-noLamp.png')}
+				resizeMode='cover'
+			>
+				<Text style={styles.smallTxt}>Parks Loading...</Text>
+			</ImageBackground>
+		);
 	}
+
 	return (
 		<View style={styles.container}>
 			<ImageBackground
@@ -192,7 +209,15 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		top: 0,
 	},
-	image_imageStyle: {},
+	bgImage: {
+		width: '100%',
+		height: '100%',
+		flex: 1,
+		width: '100%',
+		height: '100%',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
 
 	materialCard51: {
 		height: 350,
