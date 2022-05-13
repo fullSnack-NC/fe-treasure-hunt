@@ -73,7 +73,7 @@ const Locations = ({ navigation }) => {
 		getParks()
 			.then(({ parks }) => {
 				setLocations(parks);
-				setIsLoading(false);
+				// setIsLoading(false);
 				setError(null);
 			})
 			.catch((err) => {
@@ -84,7 +84,14 @@ const Locations = ({ navigation }) => {
 	}, []);
 
 	if (isLoading) {
-		return <Text>Parks Loading...</Text>;
+		<ImageBackground
+			style={styles.bgImage}
+			source={require('../assets/view-images/background-noLamp.png')}
+			resizeMode='cover'
+		>
+			<Text style={styles.smallTxt}>Parks Loading...</Text>
+			<Text>Parks Loading...</Text>;
+		</ImageBackground>;
 	}
 
 	if (error) {
@@ -116,6 +123,10 @@ const Locations = ({ navigation }) => {
 										]}
 									>
 										<View style={cardStyles.cardBody}>
+											<Image
+												style={cardStyles.cardItemImagePlace}
+												source={parkImage[park_id - 1].image}
+											></Image>
 											<View style={cardStyles.bodyContent}>
 												<Text style={cardStyles.titleStyle}>
 													{location.park_name}
@@ -138,10 +149,6 @@ const Locations = ({ navigation }) => {
 													) : null}
 												</View>
 											</View>
-											<Image
-												style={cardStyles.cardItemImagePlace}
-												source={parkImage[park_id - 1].image}
-											></Image>
 										</View>
 									</View>
 								</TouchableOpacity>
@@ -164,6 +171,15 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		top: 0,
 	},
+	bgImage: {
+		width: '100%',
+		height: '100%',
+		flex: 1,
+		width: '100%',
+		height: '100%',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
 	image_imageStyle: {},
 	cardList: {
 		margin: 10,
@@ -173,17 +189,11 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 		width: width - 20,
 	},
-	image2Stack: {
-		width: 359,
-		height: 318,
-		marginTop: 57,
-		marginLeft: 79,
-	},
-	loremIpsum4: {
-		fontFamily: 'roboto-regular',
-		color: '#121212',
-		marginTop: 228,
-		marginLeft: 246,
+	smallTxt: {
+		fontSize: 20,
+		fontWeight: '600',
+		lineHeight: 20,
+		color: '#3781D7',
 	},
 });
 
@@ -207,19 +217,20 @@ const cardStyles = StyleSheet.create({
 		opacity: 0.9,
 	},
 	cardBody: {
-		flexDirection: 'row-reverse',
-		justifyContent: 'space-between',
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
 		width: 357,
 		top: 1,
 		height: 150,
 	},
 	bodyContent: {
-		padding: 10,
+		paddingRight: 20,
 		paddingTop: 24,
+		paddingBottom: 20,
 		flex: 1,
 	},
 	titleStyle: {
-		fontSize: 15,
+		fontSize: 18,
 		fontWeight: '600',
 		color: '#fff',
 		paddingBottom: 12,
@@ -228,7 +239,10 @@ const cardStyles = StyleSheet.create({
 		color: '#000',
 		lineHeight: 16,
 		opacity: 1,
-		paddingTop: 12,
+		position: 'absolute',
+		bottom: 20,
+		width: '100%',
+		paddingTop: 15,
 		borderTopWidth: 1,
 		borderColor: '#fff',
 		flexDirection: 'row',
