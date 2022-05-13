@@ -1,19 +1,14 @@
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  ImageBackground,
-  Dimensions,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, Image, ScrollView, ImageBackground, Dimensions } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { REACT_APP_MAPS_API_KEY } from '@env';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import globalStyles from '../css/style';
+import currentWaypointStyles from '../css/currentWaypoint';
 import { getWaypointByMapID } from '../utils/api';
+import { Audio } from 'expo-av';
+import waypointPositions from '../data/waypoints';
 const geolib = require('geolib');
 
 const { width, height } = Dimensions.get('window');
@@ -239,7 +234,6 @@ const CurrentWaypoint = ({ navigation }) => {
 	} else if (location) {
 		text = JSON.stringify(location);
 	}
-
 	return (
 		<ScrollView horizontal={true} pagingEnabled={true}>
 			<View
@@ -256,6 +250,7 @@ const CurrentWaypoint = ({ navigation }) => {
 					},
 				]}
 			>
+
 				<View style={[styles.imgContainer, { backgroundColor: backgroundColor }]}>
 					<ImageBackground
 						source={require('../assets/fullSnack-background-clear.png')}

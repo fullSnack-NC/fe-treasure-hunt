@@ -1,6 +1,16 @@
-import { getParks } from "../utils/api";
+import { getParks } from '../utils/api';
 import React, { useEffect, useState, Component } from 'react';
-import { View, Text, Image, StyleSheet, ImageBackground, Dimensions, ScrollView, TouchableOpacity, Vibration } from 'react-native';
+import {
+	View,
+	Text,
+	Image,
+	StyleSheet,
+	ImageBackground,
+	Dimensions,
+	ScrollView,
+	TouchableOpacity,
+	Vibration,
+} from 'react-native';
 import { Audio } from 'expo-av';
 const { width, height } = Dimensions.get('window');
 
@@ -9,8 +19,11 @@ const Locations = ({ navigation }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [sound, setSound] = React.useState();
+
 	async function playSound() {
-		const { sound } = await Audio.Sound.createAsync(require('../assets/sounds/power-up.wav'));
+		const { sound } = await Audio.Sound.createAsync(
+			require('../assets/sounds/power-up.wav')
+		);
 		setSound(sound);
 		await sound.playAsync();
 	}
@@ -87,41 +100,49 @@ const Locations = ({ navigation }) => {
 			>
 				<>
 					<ScrollView style={[styles.cardList]}>
-						{/* <Image
-						source={require('../assets/view-images/park-life-logo.png')}
-						resizeMode='contain'
-						style={styles.image2}
-					></Image> */}
-
 						{locations.map((location) => {
 							const park_id = location.park_id;
 							const amenities = JSON.parse(location.amenities);
 
 							return (
-								<TouchableOpacity key={park_id} onPress={() => touchGo(park_id)}>
-									{/* <TouchableOpacity
+								<TouchableOpacity
 									key={park_id}
-                  onPress={() =>
-                  {
-                    // touchGo
-										setTimeout(() => {
-											navigation.push('HuntList', { park_id: park_id });
-										}, 1000)}
-									}
-								> */}
-									<View style={[cardStyles.container, styles.materialCardWithImageAndTitle]}>
+									onPress={() => touchGo(park_id)}
+								>
+									<View
+										style={[
+											cardStyles.container,
+											styles.materialCardWithImageAndTitle,
+										]}
+									>
 										<View style={cardStyles.cardBody}>
 											<View style={cardStyles.bodyContent}>
-												<Text style={cardStyles.titleStyle}>{location.park_name}</Text>
-												<View style={cardStyles.amenities}>
-													{amenities.accessible ? <Text style={cardStyles.amenitiesIcon}>🦽</Text> : null}
-													{amenities.lake ? <Text style={cardStyles.amenitiesIcon}>💧</Text> : null}
-													{amenities.wildlife ? <Text style={cardStyles.amenitiesIcon}> 🦔</Text> : null}
-													{amenities.toilet ? <Text style={cardStyles.amenitiesIcon}> 🚻</Text> : null}
-													{amenities.food ? <Text style={cardStyles.amenitiesIcon}> 🍦</Text> : null}
+
+												<Text style={cardStyles.titleStyle}>
+													{location.park_name}
+												</Text>
+												<View style={cardStyles.subtitleStyle}>
+													{amenities.accessible ? (
+														<Text style={{ fontSize: '30' }}>🦽</Text>
+													) : null}
+													{amenities.lake ? (
+														<Text style={{ fontSize: '30' }}>💧</Text>
+													) : null}
+													{amenities.wildlife ? (
+														<Text style={{ fontSize: '30' }}> 🦔</Text>
+													) : null}
+													{amenities.toilet ? (
+														<Text style={{ fontSize: '30' }}> 🚻</Text>
+													) : null}
+													{amenities.food ? (
+														<Text style={{ fontSize: '30' }}> 🍦</Text>
+													) : null}
 												</View>
 											</View>
-											<Image style={cardStyles.cardItemImagePlace} source={parkImage[park_id - 1].image}></Image>
+											<Image
+												style={cardStyles.cardItemImagePlace}
+												source={parkImage[park_id - 1].image}
+											></Image>
 										</View>
 									</View>
 								</TouchableOpacity>
@@ -137,8 +158,6 @@ const Locations = ({ navigation }) => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		// justifyContent: 'center',
-		// alignItems: 'center',
 	},
 	image: {
 		width: '100%',
@@ -147,24 +166,13 @@ const styles = StyleSheet.create({
 		top: 0,
 	},
 	image_imageStyle: {},
-	// image2: {
-	// 	flexDirection: 'column',
-	// 	height: '40%',
-	// 	left: -60,
-	// 	justifyContent: 'center',
-	// 	alignItems: 'center',
-	// },
 	cardList: {
 		margin: 10,
 		marginTop: 50,
-
-		// flexDirection: 'column',
 	},
 	materialCardWithImageAndTitle: {
 		marginBottom: 10,
 		width: width - 20,
-
-		// left: 30,
 	},
 	image2Stack: {
 		width: 359,
@@ -188,6 +196,7 @@ const cardStyles = StyleSheet.create({
 		flexWrap: 'nowrap',
 		backgroundColor: 'rgba(124,168,91,1)',
 		shadowColor: '#000',
+		top: 10,
 		shadowOffset: {
 			width: -2,
 			height: 2,
@@ -206,29 +215,25 @@ const cardStyles = StyleSheet.create({
 		height: 150,
 	},
 	bodyContent: {
-		padding: 16,
+		padding: 10,
 		paddingTop: 24,
 		flex: 1,
 	},
 	titleStyle: {
-		fontSize: 24,
+		fontSize: 15,
 		fontWeight: '600',
 		color: '#fff',
 		paddingBottom: 12,
 	},
-	amenities: {
+
+	subtitleStyle: {
 		color: '#000',
 		lineHeight: 16,
 		opacity: 1,
-		flexDirection: 'row',
-		fontSize: 30,
-		borderRadius: 5,
+		paddingTop: 12,
 		borderTopWidth: 1,
 		borderColor: '#fff',
-		paddingTop: 10,
-	},
-	amenitiesIcon: {
-		fontSize: 25,
+		flexDirection: 'row',
 	},
 	cardItemImagePlace: {
 		backgroundColor: '#ccc',
